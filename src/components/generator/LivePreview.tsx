@@ -7,6 +7,7 @@ interface LivePreviewProps {
     network: "base" | "celo" | "optimism";
     theme: string;
     color: string;
+    imageUrl?: string;
 }
 
 export function LivePreview({
@@ -15,6 +16,7 @@ export function LivePreview({
     network,
     theme,
     color,
+    imageUrl,
 }: LivePreviewProps) {
     // Mock themes for now
     const getThemeStyles = () => {
@@ -51,22 +53,25 @@ export function LivePreview({
                     getThemeStyles()
                 )}
                 style={{
-                    background: `linear-gradient(135deg, ${color}, #000000)`,
+                    background: imageUrl ? `url(${imageUrl}) center/cover no-repeat` : `linear-gradient(135deg, ${color}, #000000)`,
                     color: "white",
                 }}
             >
                 {/* Decorative Background Elements */}
                 <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white to-transparent" />
 
-                <div className="relative z-10 space-y-4">
+                {/* Overlay text on top of image if needed, or hide if image is present? 
+                    Usually POAPs have text ON the image. Let's keep text but add a text-shadow for readability.
+                */}
+                <div className="relative z-10 space-y-4 drop-shadow-md">
                     <div className="text-4xl animate-bounce">{getNetworkIcon()}</div>
-                    <h2 className="text-2xl font-bold font-heading tracking-wide break-words w-full">
+                    <h2 className="text-2xl font-bold font-heading tracking-wide break-words w-full drop-shadow-lg">
                         {title || "Event Title"}
                     </h2>
-                    <p className="text-sm font-medium opacity-80 font-mono">
+                    <p className="text-sm font-medium opacity-80 font-mono drop-shadow-lg">
                         {date || "YYYY-MM-DD"}
                     </p>
-                    <div className="text-xs uppercase tracking-widest opacity-60 mt-4">
+                    <div className="text-xs uppercase tracking-widest opacity-60 mt-4 drop-shadow-lg">
                         {network} POAP
                     </div>
                 </div>
