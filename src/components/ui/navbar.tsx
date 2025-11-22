@@ -16,24 +16,26 @@ export function Navbar() {
     ];
 
     return (
-        <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/80 backdrop-blur-md">
-            <div className="container mx-auto flex h-16 items-center justify-between px-4">
-                <Link href="/" className="flex items-center gap-2">
-                    <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-secondary" />
-                    <span className="text-xl font-bold tracking-tight font-heading">
+        <nav className="fixed top-0 z-50 w-full border-b border-white/5 bg-background/60 backdrop-blur-xl">
+            <div className="container mx-auto flex h-20 items-center justify-between px-6">
+                <Link href="/" className="flex items-center gap-3 group">
+                    <div className="relative h-8 w-8 overflow-hidden rounded-lg bg-white/5 ring-1 ring-white/10 transition-all duration-300 group-hover:ring-white/20">
+                        <div className="absolute inset-0 bg-gradient-to-br from-base via-optimism to-celo opacity-80" />
+                    </div>
+                    <span className="text-xl font-bold tracking-tight font-heading text-foreground">
                         POAP me UP
                     </span>
                 </Link>
 
-                <div className="hidden md:flex items-center gap-6">
+                <div className="hidden md:flex items-center gap-8">
                     {links.map((link) => (
                         <Link
                             key={link.href}
                             href={link.href}
                             className={cn(
-                                "text-sm font-medium transition-colors hover:text-primary",
+                                "text-sm font-medium transition-all duration-200 hover:text-white",
                                 pathname === link.href
-                                    ? "text-foreground"
+                                    ? "text-white"
                                     : "text-muted-foreground"
                             )}
                         >
@@ -49,6 +51,7 @@ export function Navbar() {
                             smallScreen: 'avatar',
                             largeScreen: 'full',
                         }}
+                        chainStatus="icon"
                     />
                 </div>
             </div>
