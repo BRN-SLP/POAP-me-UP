@@ -68,7 +68,7 @@ export const POAP_ABI = [
 ] as const;
 
 export const POAP_ADDRESSES = {
-    baseSepolia: "0x21D37b2Bb9893110a5FCf6f800a7e6D654913A79",
+    baseSepolia: "0x45f6dAAEFA7F5F374901787b83EB0fbb40f1932f",
     optimismSepolia: "0x543B57fB141855e5590DBaDfbc1302F5239271f3",
     // celoSepolia: "SKIPPED",
 } as const;

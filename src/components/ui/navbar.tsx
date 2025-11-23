@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export function Navbar() {
     return (
@@ -32,7 +31,7 @@ export function Navbar() {
                     </div>
 
                     <div className="pl-4 border-l border-white/10">
-                        <ConnectButton />
+                        <appkit-button />
                     </div>
                 </div>
             </div>

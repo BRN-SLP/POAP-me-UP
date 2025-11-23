@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
-import { Providers } from "@/components/Providers";
+import ContextProvider from "@/context";
+import { headers } from "next/headers";
 import { cn } from "@/lib/utils";
-import "@rainbow-me/rainbowkit/styles.css";
+
+// Reown AppKit styles are imported automatically
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,13 +25,14 @@ export const metadata: Metadata = {
 import { Navbar } from "@/components/ui/navbar";
 import { Footer } from "@/components/ui/footer";
 
-// ... imports
-
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headersList = await headers();
+  const cookies = headersList.get('cookie');
+
   return (
     <html lang="en">
       <body
@@ -39,11 +42,11 @@ export default function RootLayout({
           outfit.variable
         )}
       >
-        <Providers>
+        <ContextProvider cookies={cookies}>
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
-        </Providers>
+        </ContextProvider>
       </body>
     </html>
   );
