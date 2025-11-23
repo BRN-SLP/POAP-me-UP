@@ -33,10 +33,17 @@ export function GeneratorForm() {
         }
     }, [isConfirmed, receipt]);
 
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<{
+        title: string;
+        date: string;
+        network: "base" | "celo" | "optimism";
+        theme: string;
+        color: string;
+        imageUrl?: string;
+    }>({
         title: "",
         date: "",
-        network: "base" as "base" | "celo" | "optimism",
+        network: "base",
         theme: "modern",
         color: "#0052FF",
     });
@@ -132,62 +139,71 @@ export function GeneratorForm() {
                     </CardHeader>
                     <CardContent className="space-y-6">
                         <div className="space-y-3">
-                            <label className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Network</label>
-                            <div className="grid grid-cols-3 gap-3">
-                                <button
+                            <label className="text-sm font-medium text-white/70 uppercase tracking-wider">Network</label>
+                            <div className="flex gap-3">
+                                <Button
+                                    variant={formData.network === "base" ? "default" : "outline"}
                                     onClick={() => setFormData({ ...formData, network: "base" })}
-                                    className={`flex flex-col items-center justify-center p-3 rounded-xl border transition-all ${formData.network === "base" ? "bg-base/20 border-base text-white" : "bg-white/5 border-transparent hover:bg-white/10 text-muted-foreground"}`}
+                                    className={`flex-1 capitalize h-12 font-semibold ${formData.network === "base"
+                                            ? "bg-base hover:bg-base-neon text-white btn-glow-base"
+                                            : "border-base/30 text-base hover:bg-base/10 hover:border-base"
+                                        }`}
                                 >
-                                    <div className={`w-3 h-3 rounded-full mb-2 ${formData.network === "base" ? "bg-base" : "bg-muted-foreground/30"}`} />
-                                    <span className="text-sm font-medium">Base</span>
-                                </button>
-                                <button
+                                    Base
+                                </Button>
+                                <Button
+                                    variant={formData.network === "optimism" ? "default" : "outline"}
                                     onClick={() => setFormData({ ...formData, network: "optimism" })}
-                                    className={`flex flex-col items-center justify-center p-3 rounded-xl border transition-all ${formData.network === "optimism" ? "bg-optimism/20 border-optimism text-white" : "bg-white/5 border-transparent hover:bg-white/10 text-muted-foreground"}`}
+                                    className={`flex-1 capitalize h-12 font-semibold ${formData.network === "optimism"
+                                            ? "bg-optimism hover:bg-optimism-neon text-white btn-glow-optimism"
+                                            : "border-optimism/30 text-optimism hover:bg-optimism/10 hover:border-optimism"
+                                        }`}
                                 >
-                                    <div className={`w-3 h-3 rounded-full mb-2 ${formData.network === "optimism" ? "bg-optimism" : "bg-muted-foreground/30"}`} />
-                                    <span className="text-sm font-medium">Optimism</span>
-                                </button>
-                                <button
+                                    Optimism
+                                </Button>
+                                <Button
+                                    variant="outline"
                                     disabled
-                                    className="flex flex-col items-center justify-center p-3 rounded-xl border border-transparent bg-white/5 opacity-50 cursor-not-allowed"
+                                    className="flex-1 capitalize h-12 opacity-40 cursor-not-allowed border-celo/20 text-celo/50"
                                 >
-                                    <div className="w-3 h-3 rounded-full mb-2 bg-celo" />
-                                    <span className="text-sm font-medium">Celo</span>
-                                </button>
+                                    Celo (Soon)
+                                </Button>
                             </div>
                         </div>
 
                         <div className="space-y-3">
-                            <label className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Event Title</label>
+                            <label className="text-sm font-medium text-white/70 uppercase tracking-wider">Event Title</label>
                             <Input
                                 placeholder="e.g. Superchain Summit 2024"
                                 value={formData.title}
                                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                                className="bg-white/5 border-white/10 focus:border-white/30 h-12 text-lg"
+                                className="bg-black/40 border-white/20 focus:border-white/40 h-12 text-lg placeholder:text-white/30 text-white"
                             />
                         </div>
 
                         <div className="space-y-3">
-                            <label className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Date</label>
+                            <label className="text-sm font-medium text-white/70 uppercase tracking-wider">Date</label>
                             <Input
                                 type="date"
                                 value={formData.date}
                                 onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                                className="bg-white/5 border-white/10 focus:border-white/30 h-12"
+                                className="bg-black/40 border-white/20 focus:border-white/40 h-12 text-white"
                             />
                         </div>
 
                         <div className="space-y-3">
-                            <label className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Theme Style</label>
-                            <div className="flex gap-2">
+                            <label className="text-sm font-medium text-white/70 uppercase tracking-wider">Theme Style</label>
+                            <div className="flex gap-3">
                                 {["modern", "classic", "pixel"].map((theme) => (
                                     <Button
                                         key={theme}
-                                        variant={formData.theme === theme ? "secondary" : "ghost"}
+                                        variant={formData.theme === theme ? "default" : "ghost"}
                                         size="sm"
                                         onClick={() => setFormData({ ...formData, theme })}
-                                        className={`capitalize flex-1 ${formData.theme === theme ? "bg-white text-black hover:bg-white/90" : "text-muted-foreground hover:text-white hover:bg-white/10"}`}
+                                        className={`capitalize flex-1 h-10 font-medium ${formData.theme === theme
+                                            ? "bg-white/90 text-black hover:bg-white"
+                                            : "text-white/60 hover:text-white hover:bg-white/10 border border-white/10"
+                                            }`}
                                     >
                                         {theme}
                                     </Button>
@@ -207,7 +223,7 @@ export function GeneratorForm() {
                                                 : "border-transparent hover:scale-105"
                                                 }`}
                                             style={{ backgroundColor: color }}
-                                            onClick={() => setFormData({ ...formData, color })}
+                                            onClick={() => setFormData(prev => ({ ...prev, color }))}
                                         />
                                     )
                                 )}
