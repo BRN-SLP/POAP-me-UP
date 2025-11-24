@@ -73,11 +73,11 @@ export function GeneratorForm() {
             // Client-side generation using Pollinations.ai
             // This avoids server-side timeouts and uses the user's browser directly
             const encodedPrompt = encodeURIComponent(
-                `A high quality, premium POAP badge design. ${formData.theme} style. Abstract, artistic, no text, no letters, no words. Vector style, clean lines, circular badge format, vibrant colors, 8k resolution, highly detailed.`
+                `A premium POAP commemorative badge design. Title: "${formData.title}". Date: "${formData.date}". ${formData.theme} style. Circular badge format, professional typography, clean layout, vibrant colors, vector art style, highly detailed, 8k resolution.`
             );
 
             const randomSeed = Math.floor(Math.random() * 1000000);
-            const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?model=flux&width=1024&height=1024&nologo=true&seed=${randomSeed}`;
+            const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?model=flux-pro&width=1024&height=1024&nologo=true&seed=${randomSeed}`;
 
             // Preload image to ensure it's ready before showing
             const img = new Image();
