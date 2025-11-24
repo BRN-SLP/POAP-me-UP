@@ -1,8 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
+import { Wallet } from "lucide-react";
 
 export function Navbar() {
+    const { open } = useAppKit();
+    const { address, isConnected } = useAppKitAccount();
+
+    const formatAddress = (addr: string) => {
+        return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
+    };
+
     return (
         <nav className="sticky top-0 z-50 w-full border-b border-white/5 bg-black/60 backdrop-blur-xl supports-[backdrop-filter]:bg-black/60">
             <div className="container mx-auto px-6 h-20 flex items-center justify-between">
@@ -31,7 +40,21 @@ export function Navbar() {
                     </div>
 
                     <div className="pl-4 border-l border-white/10">
-                        <appkit-button />
+                        <button
+                            onClick={() => open()}
+                            className="group relative px-5 py-2.5 rounded-lg font-medium text-sm transition-all duration-300 hover:scale-105"
+                        >
+                            {/* Gradient background */}
+                            <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-base via-optimism to-celo opacity-90 group-hover:opacity-100 transition-opacity" />
+
+                            {/* Inner content */}
+                            <div className="relative flex items-center gap-2 text-white">
+                                <Wallet className="w-4 h-4" />
+                                <span>
+                                    {isConnected && address ? formatAddress(address) : "Connect Wallet"}
+                                </span>
+                            </div>
+                        </button>
                     </div>
                 </div>
             </div>
