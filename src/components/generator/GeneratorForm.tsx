@@ -68,31 +68,34 @@ export function GeneratorForm() {
         }
 
         setIsGenerating(true);
+
         try {
-            const response = await fetch("/api/generate", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    prompt: `${formData.title} ${formData.theme} style POAP badge`,
-                }),
+            // Client-side generation using Pollinations.ai
+            // This avoids server-side timeouts and uses the user's browser directly
+            const encodedPrompt = encodeURIComponent(
+                `A high quality, premium POAP badge design. ${formData.title} ${formData.theme} style. Vector style, clean lines, circular badge format, vibrant colors, 8k resolution, highly detailed.`
+            );
+
+            const randomSeed = Math.floor(Math.random() * 1000000);
+            const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?model=flux&width=1024&height=1024&nologo=true&seed=${randomSeed}`;
+
+            // Preload image to ensure it's ready before showing
+            const img = new Image();
+            img.src = imageUrl;
+
+            await new Promise((resolve, reject) => {
+                img.onload = resolve;
+                img.onerror = () => reject(new Error("Failed to load image from Pollinations"));
             });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.error || "Failed to generate");
-            }
 
             setFormData(prev => ({
                 ...prev,
-                imageUrl: data.imageUrl
+                imageUrl: imageUrl
             }));
 
         } catch (error: any) {
             console.error(error);
-            setError(error.message || "Failed to generate image");
+            setError("Failed to generate image. Please try again.");
         } finally {
             setIsGenerating(false);
         }
