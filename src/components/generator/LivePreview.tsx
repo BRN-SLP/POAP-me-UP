@@ -1,6 +1,5 @@
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { useState, useEffect } from "react";
 
 interface LivePreviewProps {
     title: string;
@@ -19,17 +18,6 @@ export function LivePreview({
     color,
     imageUrl,
 }: LivePreviewProps) {
-    const [isLoadingImage, setIsLoadingImage] = useState(false);
-    const [imageError, setImageError] = useState(false);
-
-    // Reset state when imageUrl changes
-    useEffect(() => {
-        if (imageUrl) {
-            setIsLoadingImage(true);
-            setImageError(false);
-        }
-    }, [imageUrl]);
-
     // Mock themes for now
     const getThemeStyles = () => {
         switch (theme) {
@@ -57,8 +45,6 @@ export function LivePreview({
         }
     };
 
-    const showOverlay = !imageUrl || imageError;
-
     return (
         <Card className="w-full max-w-md aspect-square flex items-center justify-center bg-muted/20 backdrop-blur-sm overflow-hidden relative p-8">
             <div
@@ -67,41 +53,17 @@ export function LivePreview({
                     getThemeStyles()
                 )}
                 style={{
-                    background: showOverlay ? `linear-gradient(135deg, ${color}, #000000)` : 'black',
+                    background: imageUrl ? `url(${imageUrl}) center/contain no-repeat` : `linear-gradient(135deg, ${color}, #000000)`,
                     color: "white",
                 }}
             >
-                {/* Image Layer */}
-                {imageUrl && !imageError && (
-                    <>
-                        {isLoadingImage && (
-                            <div className="absolute inset-0 flex items-center justify-center z-20 bg-black/50 backdrop-blur-sm">
-                                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
-                            </div>
-                        )}
-                        <img
-                            src={imageUrl}
-                            alt="POAP Preview"
-                            className={cn(
-                                "absolute inset-0 w-full h-full object-contain transition-opacity duration-500",
-                                isLoadingImage ? "opacity-0" : "opacity-100"
-                            )}
-                            onLoad={() => setIsLoadingImage(false)}
-                            onError={() => {
-                                setIsLoadingImage(false);
-                                setImageError(true);
-                            }}
-                        />
-                    </>
-                )}
-
-                {/* Decorative Background Elements - Only show if overlay is visible */}
-                {showOverlay && (
+                {/* Decorative Background Elements - Only show if no image */}
+                {!imageUrl && (
                     <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white to-transparent" />
                 )}
 
-                {/* Overlay text - Only show if no image or error */}
-                {showOverlay && (
+                {/* Overlay text - Only show if no image is generated */}
+                {!imageUrl && (
                     <div className="relative z-10 space-y-4 drop-shadow-md">
                         <div className="text-4xl animate-bounce">{getNetworkIcon()}</div>
                         <h2 className="text-2xl font-bold font-heading tracking-wide break-words w-full drop-shadow-lg">

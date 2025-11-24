@@ -34,7 +34,7 @@ const queryClient = new QueryClient()
 const metadata = {
     name: "POAP me UP",
     description: "Generate and mint exclusive POAPs on the Superchain",
-    url: "http://localhost:3000",
+    url: "http://185.229.251.126:3000",
     icons: ["https://avatars.githubusercontent.com/u/179229932"],
 }
 
