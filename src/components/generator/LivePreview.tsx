@@ -66,21 +66,22 @@ export function LivePreview({
                     <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white to-transparent" />
                 )}
 
-                {/* Overlay text - Only show if no image is generated */}
-                {!imageUrl && (
-                    <div className="relative z-10 space-y-4 drop-shadow-md">
-                        <div className="text-4xl animate-bounce">{getNetworkIcon()}</div>
-                        <h2 className="text-2xl font-bold font-heading tracking-wide break-words w-full drop-shadow-lg">
-                            {title || "Event Title"}
-                        </h2>
-                        <p className="text-sm font-medium opacity-80 font-mono drop-shadow-lg">
-                            {date || "YYYY-MM-DD"}
-                        </p>
-                        <div className="text-xs uppercase tracking-widest opacity-60 mt-4 drop-shadow-lg">
-                            {network} POAP
-                        </div>
+                {/* Overlay text - Always show, with enhanced contrast if image is present */}
+                <div className={cn(
+                    "relative z-10 space-y-4 transition-all duration-300 flex flex-col items-center justify-center w-full h-full",
+                    imageUrl ? "bg-black/40 backdrop-blur-[1px]" : ""
+                )}>
+                    <div className="text-4xl animate-bounce drop-shadow-xl">{getNetworkIcon()}</div>
+                    <h2 className="text-2xl font-bold font-heading tracking-wide break-words w-full px-4 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
+                        {title || "Event Title"}
+                    </h2>
+                    <p className="text-sm font-medium opacity-90 font-mono drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
+                        {date || "YYYY-MM-DD"}
+                    </p>
+                    <div className="text-xs uppercase tracking-widest opacity-80 mt-4 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] font-bold">
+                        {network} POAP
                     </div>
-                )}
+                </div>
             </div>
         </Card>
     );
