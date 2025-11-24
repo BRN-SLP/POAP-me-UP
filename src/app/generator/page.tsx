@@ -8,7 +8,7 @@ export default function GeneratorPage() {
             <div className="max-w-5xl mx-auto">
                 <div className="text-center mb-12 space-y-4">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-white/60 backdrop-blur-md">
-                        <span className="w-2 h-2 rounded-full bg-base animate-pulse"></span>
+                        <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                         AI Model Ready
                     </div>
                     <h1 className="text-4xl md:text-6xl font-bold font-heading tracking-tight">
