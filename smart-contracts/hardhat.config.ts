@@ -1,5 +1,5 @@
 import "@nomiclabs/hardhat-ethers";
-import "@nomicfoundation/hardhat-verify";
+import "@nomiclabs/hardhat-etherscan";
 import "hardhat-deploy";
 import "@layerzerolabs/toolbox-hardhat";
 import * as dotenv from "dotenv";
