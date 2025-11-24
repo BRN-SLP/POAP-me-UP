@@ -50,6 +50,8 @@ export function GeneratorForm() {
 
     const [isGenerating, setIsGenerating] = useState(false);
 
+    const [error, setError] = useState<string | null>(null);
+
     const getTargetChainId = () => {
         switch (formData.network) {
             case "base": return baseSepolia.id;
@@ -59,8 +61,9 @@ export function GeneratorForm() {
     };
 
     const handleGenerateAI = async () => {
+        setError(null);
         if (!formData.title) {
-            alert("Please enter an event title first!");
+            setError("Please enter an event title first!");
             return;
         }
 
@@ -87,12 +90,17 @@ export function GeneratorForm() {
                 imageUrl: data.imageUrl
             }));
 
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
-            alert("Failed to generate image. Check console for details.");
+            setError(error.message || "Failed to generate image");
         } finally {
             setIsGenerating(false);
         }
+    };
+
+    const handleClearImage = () => {
+        setFormData(prev => ({ ...prev, imageUrl: undefined }));
+        setError(null);
     };
 
     const handleMint = async () => {
@@ -109,7 +117,7 @@ export function GeneratorForm() {
             : POAP_ADDRESSES.optimismSepolia;
 
         if (!contractAddress) {
-            alert("Contract not deployed on this network yet.");
+            setError("Contract not deployed on this network yet.");
             return;
         }
 
@@ -145,8 +153,8 @@ export function GeneratorForm() {
                                     variant={formData.network === "base" ? "default" : "outline"}
                                     onClick={() => setFormData({ ...formData, network: "base" })}
                                     className={`flex-1 capitalize h-12 font-semibold ${formData.network === "base"
-                                            ? "bg-base hover:bg-base-neon text-white btn-glow-base"
-                                            : "border-base/30 text-base hover:bg-base/10 hover:border-base"
+                                        ? "bg-base hover:bg-base-neon text-white btn-glow-base"
+                                        : "border-base/30 text-base hover:bg-base/10 hover:border-base"
                                         }`}
                                 >
                                     Base
@@ -155,8 +163,8 @@ export function GeneratorForm() {
                                     variant={formData.network === "optimism" ? "default" : "outline"}
                                     onClick={() => setFormData({ ...formData, network: "optimism" })}
                                     className={`flex-1 capitalize h-12 font-semibold ${formData.network === "optimism"
-                                            ? "bg-optimism hover:bg-optimism-neon text-white btn-glow-optimism"
-                                            : "border-optimism/30 text-optimism hover:bg-optimism/10 hover:border-optimism"
+                                        ? "bg-optimism hover:bg-optimism-neon text-white btn-glow-optimism"
+                                        : "border-optimism/30 text-optimism hover:bg-optimism/10 hover:border-optimism"
                                         }`}
                                 >
                                     Optimism
@@ -232,18 +240,36 @@ export function GeneratorForm() {
                     </CardContent>
                 </Card>
 
-                <Button
-                    className="w-full h-14 text-lg font-bold bg-gradient-to-r from-base via-optimism to-celo hover:opacity-90 transition-opacity rounded-xl"
-                    onClick={handleGenerateAI}
-                    disabled={isGenerating}
-                >
-                    {isGenerating ? (
-                        <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
-                    ) : (
-                        <Sparkles className="mr-2 h-5 w-5" />
+                {error && (
+                    <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
+                        {error}
+                    </div>
+                )}
+
+                <div className="flex gap-4">
+                    <Button
+                        className="flex-1 h-14 text-lg font-bold bg-gradient-to-r from-base via-optimism to-celo hover:opacity-90 transition-opacity rounded-xl"
+                        onClick={handleGenerateAI}
+                        disabled={isGenerating}
+                    >
+                        {isGenerating ? (
+                            <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
+                        ) : (
+                            <Sparkles className="mr-2 h-5 w-5" />
+                        )}
+                        {isGenerating ? "Generating..." : "Generate with AI"}
+                    </Button>
+
+                    {formData.imageUrl && (
+                        <Button
+                            variant="outline"
+                            className="h-14 px-6 border-white/10 hover:bg-white/10 text-white"
+                            onClick={handleClearImage}
+                        >
+                            Clear
+                        </Button>
                     )}
-                    {isGenerating ? "Generating Options..." : "Generate with AI"}
-                </Button>
+                </div>
             </div>
 
             <div className="sticky top-24 flex flex-col items-center gap-8">
