@@ -18,19 +18,20 @@ export async function POST(request: Request) {
 
         if (!process.env.REPLICATE_API_TOKEN) {
             console.warn("Replicate API token NOT found in env.");
-            console.warn("Replicate API token not found, using mock image.");
-            // Return a mock image for testing purposes
             return NextResponse.json({
-                imageUrl: "https://replicate.delivery/pbxt/L7j6X8QZz5Z1H1X8QZz5Z1H1X8QZz5Z1H1X8QZz5Z1H1/out-0.png" // Placeholder or generic POAP image
+                imageUrl: "https://replicate.delivery/pbxt/L7j6X8QZz5Z1H1X8QZz5Z1H1X8QZz5Z1H1X8QZz5Z1H1/out-0.png"
             });
-        } else {
-            console.log("Replicate API token found.");
         }
 
-        // Using Flux 1.1 Pro for high quality image generation
-        const output = await replicate.run(
-            "black-forest-labs/flux-1.1-pro",
-            {
+        // 1. Start the prediction
+        const startResponse = await fetch("https://api.replicate.com/v1/predictions", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${process.env.REPLICATE_API_TOKEN}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                version: "25880192b671c38ace036e0a5b7777002e95e297125f7500e5728a50f1110013", // flux-1.1-pro
                 input: {
                     prompt: `A high quality, premium POAP badge design. ${prompt}. Vector style, clean lines, circular badge format, vibrant colors, 8k resolution, highly detailed.`,
                     aspect_ratio: "1:1",
@@ -38,15 +39,52 @@ export async function POST(request: Request) {
                     output_quality: 100,
                     safety_tolerance: 2
                 }
+            })
+        });
+
+        if (!startResponse.ok) {
+            const error = await startResponse.json();
+            console.error("Replicate API error:", error);
+            throw new Error(`Replicate API error: ${JSON.stringify(error)}`);
+        }
+
+        const prediction = await startResponse.json();
+        let status = prediction.status;
+        let output = prediction.output;
+        const getUrl = prediction.urls.get;
+
+        // 2. Poll for completion
+        while (status !== "succeeded" && status !== "failed" && status !== "canceled") {
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1s
+
+            const pollResponse = await fetch(getUrl, {
+                headers: {
+                    "Authorization": `Bearer ${process.env.REPLICATE_API_TOKEN}`,
+                }
+            });
+
+            if (!pollResponse.ok) {
+                throw new Error("Failed to poll prediction status");
             }
-        );
+
+            const updatedPrediction = await pollResponse.json();
+            status = updatedPrediction.status;
+            output = updatedPrediction.output;
+        }
+
+        if (status !== "succeeded") {
+            throw new Error(`Prediction failed with status: ${status}`);
+        }
 
         console.log("Replicate output:", output);
 
-        return NextResponse.json({ imageUrl: output });
+        // Output for flux-1.1-pro is usually a string (URL) or array of strings
+        const imageUrl = Array.isArray(output) ? output[0] : output;
+
+        return NextResponse.json({ imageUrl });
+
     } catch (error) {
         console.error("Error generating image:", error);
-        // Fallback to mock on error too
         return NextResponse.json({
             imageUrl: "https://placehold.co/1024x1024/050505/0052FF/png?text=POAP+Preview&font=outfit"
         });
