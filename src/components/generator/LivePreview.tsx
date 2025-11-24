@@ -46,7 +46,6 @@ export function LivePreview({
     };
 
     return (
-    return (
         <Card className={cn(
             "w-full max-w-md aspect-square min-h-[320px] flex items-center justify-center bg-muted/20 backdrop-blur-sm overflow-hidden relative",
             imageUrl ? "p-1" : "p-8"
