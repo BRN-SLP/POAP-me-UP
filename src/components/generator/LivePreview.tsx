@@ -46,18 +46,19 @@ export function LivePreview({
     };
 
     return (
+    return (
         <Card className={cn(
-            "w-full max-w-md aspect-square flex items-center justify-center bg-muted/20 backdrop-blur-sm overflow-hidden relative",
-            imageUrl ? "p-0" : "p-8"
+            "w-full max-w-md aspect-square min-h-[320px] flex items-center justify-center bg-muted/20 backdrop-blur-sm overflow-hidden relative",
+            imageUrl ? "p-1" : "p-8"
         )}>
             <div
                 className={cn(
-                    "w-full h-full rounded-full flex flex-col items-center justify-center text-center transition-all duration-500 shadow-2xl relative overflow-hidden",
+                    "w-full h-full rounded-full flex flex-col items-center justify-center text-center transition-all duration-500 shadow-2xl relative overflow-hidden bg-black",
                     imageUrl ? "p-0" : "p-8",
                     getThemeStyles()
                 )}
                 style={{
-                    background: imageUrl ? `url(${imageUrl}) center/cover no-repeat` : `linear-gradient(135deg, ${color}, #000000)`,
+                    background: imageUrl ? `url('${imageUrl}') center/cover no-repeat` : `linear-gradient(135deg, ${color}, #000000)`,
                     color: "white",
                 }}
             >
