@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { useState, useEffect } from "react";
 
 interface LivePreviewProps {
     title: string;
