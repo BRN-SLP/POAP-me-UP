@@ -68,7 +68,7 @@ export function LivePreview({
 
                 {/* Overlay text - Always show, with enhanced contrast if image is present */}
                 <div className={cn(
-                    "relative z-10 space-y-4 transition-all duration-300 flex flex-col items-center justify-center w-full h-full",
+                    "absolute inset-0 z-10 space-y-4 transition-all duration-300 flex flex-col items-center justify-center w-full h-full",
                     imageUrl ? "bg-black/40 backdrop-blur-[1px]" : ""
                 )}>
                     <div className="text-4xl animate-bounce drop-shadow-xl">{getNetworkIcon()}</div>
