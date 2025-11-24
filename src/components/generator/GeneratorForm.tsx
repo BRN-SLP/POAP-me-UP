@@ -8,7 +8,7 @@ import { LivePreview } from "./LivePreview";
 import { Sparkles, RefreshCw, Download, Wallet, CheckCircle2, Loader2 } from "lucide-react";
 import { useAccount, useWriteContract, useWaitForTransactionReceipt, useSwitchChain } from "wagmi";
 import { POAP_ABI, POAP_ADDRESSES } from "@/config/contracts";
-import { baseSepolia, optimismSepolia } from "wagmi/chains";
+import { base, baseSepolia, optimismSepolia } from "wagmi/chains";
 
 export function GeneratorForm() {
     const { address, isConnected, chain } = useAccount();
@@ -54,9 +54,9 @@ export function GeneratorForm() {
 
     const getTargetChainId = () => {
         switch (formData.network) {
-            case "base": return baseSepolia.id;
+            case "base": return base.id;
             case "optimism": return optimismSepolia.id;
-            default: return baseSepolia.id;
+            default: return base.id;
         }
     };
 
@@ -116,7 +116,7 @@ export function GeneratorForm() {
         }
 
         const contractAddress = formData.network === 'base'
-            ? POAP_ADDRESSES.baseSepolia
+            ? POAP_ADDRESSES.base
             : POAP_ADDRESSES.optimismSepolia;
 
         if (!contractAddress) {
@@ -310,7 +310,7 @@ export function GeneratorForm() {
                             </p>
                             <a
                                 href={formData.network === 'base'
-                                    ? `https://sepolia.basescan.org/tx/${hash}`
+                                    ? `https://basescan.org/tx/${hash}`
                                     : `https://sepolia-optimism.etherscan.io/tx/${hash}`
                                 }
                                 target="_blank"
