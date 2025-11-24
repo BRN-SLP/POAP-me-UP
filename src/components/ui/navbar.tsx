@@ -29,33 +29,44 @@ export function Navbar() {
                 </Link>
 
                 {/* Right Side: Navigation & Connect */}
-                <div className="flex items-center gap-8">
-                    <div className="hidden md:flex items-center gap-8">
-                        <Link href="/generator" className="text-sm font-medium text-white/60 hover:text-white transition-colors">
-                            Generator
-                        </Link>
-                        <Link href="/about" className="text-sm font-medium text-white/60 hover:text-white transition-colors">
-                            About
-                        </Link>
-                    </div>
-
-                    <div className="pl-4 border-l border-white/10">
-                        <button
-                            onClick={() => open()}
-                            className="group relative px-5 py-2.5 rounded-lg font-medium text-sm transition-all duration-300 hover:scale-105"
+                <div className="flex items-center gap-6">
+                    {/* Navigation Links */}
+                    <div className="hidden md:flex items-center gap-6">
+                        <Link
+                            href="/generator"
+                            className="relative text-sm font-medium text-white/70 hover:text-white transition-all duration-300 group"
                         >
-                            {/* Gradient background */}
-                            <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-base via-optimism to-celo opacity-90 group-hover:opacity-100 transition-opacity" />
-
-                            {/* Inner content */}
-                            <div className="relative flex items-center gap-2 text-white">
-                                <Wallet className="w-4 h-4" />
-                                <span>
-                                    {isConnected && address ? formatAddress(address) : "Connect Wallet"}
-                                </span>
-                            </div>
-                        </button>
+                            <span className="relative z-10">Generator</span>
+                            <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-base to-optimism group-hover:w-full transition-all duration-300" />
+                        </Link>
+                        <Link
+                            href="/about"
+                            className="relative text-sm font-medium text-white/70 hover:text-white transition-all duration-300 group"
+                        >
+                            <span className="relative z-10">About</span>
+                            <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-optimism to-celo group-hover:w-full transition-all duration-300" />
+                        </Link>
                     </div>
+
+                    {/* Divider */}
+                    <div className="hidden md:block h-8 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+
+                    {/* Connect Wallet Button */}
+                    <button
+                        onClick={() => open()}
+                        className="group relative px-5 py-2.5 rounded-lg font-medium text-sm transition-all duration-300 hover:scale-105 border border-white/10 hover:border-white/20"
+                    >
+                        {/* Gradient background */}
+                        <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-base via-optimism to-celo opacity-90 group-hover:opacity-100 transition-opacity" />
+
+                        {/* Inner content */}
+                        <div className="relative flex items-center gap-2 text-white">
+                            <Wallet className="w-4 h-4" />
+                            <span className="font-semibold">
+                                {isConnected && address ? formatAddress(address) : "Connect Wallet"}
+                            </span>
+                        </div>
+                    </button>
                 </div>
             </div>
         </nav>
