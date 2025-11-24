@@ -12,15 +12,10 @@ async function main() {
     // Note: Check official LayerZero docs for latest addresses if these fail.
     // Using a placeholder for now, user should verify.
 
-    const LZ_ENDPOINT = "0x6EDCE65403992e310A62460808c4b910D972f10f";
-    const DELEGATE = deployer.address;
-
     const POAPMeUp = await ethers.getContractFactory("POAPMeUp");
     const poap = await POAPMeUp.deploy(
         "POAP Me Up",
-        "POAP",
-        LZ_ENDPOINT,
-        DELEGATE
+        "POAP"
     );
 
     await poap.deployed();
