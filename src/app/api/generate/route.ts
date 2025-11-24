@@ -24,14 +24,14 @@ export async function POST(request: Request) {
         }
 
         // 1. Start the prediction
-        const startResponse = await fetch("https://api.replicate.com/v1/predictions", {
+        const startResponse = await fetch("https://api.replicate.com/v1/models/black-forest-labs/flux-1.1-pro/predictions", {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${process.env.REPLICATE_API_TOKEN}`,
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                version: "25880192b671c38ace036e0a5b7777002e95e297125f7500e5728a50f1110013", // flux-1.1-pro
+                // version field is not needed for model-specific endpoint
                 input: {
                     prompt: `A high quality, premium POAP badge design. ${prompt}. Vector style, clean lines, circular badge format, vibrant colors, 8k resolution, highly detailed.`,
                     aspect_ratio: "1:1",
