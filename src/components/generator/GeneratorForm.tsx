@@ -70,80 +70,28 @@ export function GeneratorForm() {
         setIsGenerating(true);
 
         try {
-            // 1. Generate BACKGROUND only using AI (no text)
+            // Client-side generation using Pollinations.ai
+            // This avoids server-side timeouts and uses the user's browser directly
             const encodedPrompt = encodeURIComponent(
-                `Masterpiece, best quality, high resolution. A premium POAP commemorative badge background. Abstract ${formData.theme} style art. Circular badge format, vibrant colors, vector art style, highly detailed, 8k resolution, unreal engine 5 render. No text, no letters, blank center area for text.`
+                `Masterpiece, best quality, high resolution. A premium POAP commemorative badge design. Title: "${formData.title}". Date: "${formData.date}". ${formData.theme} style. Circular badge format, professional typography, clean layout, vibrant colors, vector art style, highly detailed, 8k resolution, unreal engine 5 render.`
             );
 
             const randomSeed = Math.floor(Math.random() * 1000000);
-            const aiImageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?model=flux-pro&width=1024&height=1024&nologo=true&enhance=true&seed=${randomSeed}`;
+            // Using FLUX.1-dev for superior text rendering in badges
+            const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?model=flux&width=1024&height=1024&nologo=true&enhance=true&seed=${randomSeed}`;
 
-            // 2. Load the AI image
+            // Preload image to ensure it's ready before showing
             const img = new Image();
-            img.crossOrigin = "Anonymous"; // Crucial for canvas export
-            img.src = aiImageUrl;
+            img.src = imageUrl;
 
             await new Promise((resolve, reject) => {
                 img.onload = resolve;
                 img.onerror = () => reject(new Error("Failed to load image from Pollinations"));
             });
 
-            // 3. Create Canvas to composite Image + Text
-            const canvas = document.createElement('canvas');
-            canvas.width = 1024;
-            canvas.height = 1024;
-            const ctx = canvas.getContext('2d');
-            if (!ctx) throw new Error("Could not get canvas context");
-
-            // Draw Background
-            ctx.drawImage(img, 0, 0, 1024, 1024);
-
-            // Configure Text Styles
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-
-            // Add semi-transparent overlay for readability if needed
-            // ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-            // ctx.fillRect(0, 0, 1024, 1024);
-
-            // Draw Title
-            ctx.font = 'bold 80px Inter, sans-serif';
-            ctx.fillStyle = '#FFFFFF';
-            ctx.shadowColor = 'rgba(0,0,0,0.8)';
-            ctx.shadowBlur = 20;
-            ctx.shadowOffsetX = 4;
-            ctx.shadowOffsetY = 4;
-
-            // Wrap text logic
-            const words = formData.title.split(' ');
-            let line = '';
-            let y = 512 - (words.length > 3 ? 60 : 0); // Adjust vertical center based on length
-
-            // Simple text wrapping for title
-            if (formData.title.length > 20) {
-                ctx.font = 'bold 60px Inter, sans-serif';
-                const mid = Math.floor(words.length / 2);
-                const line1 = words.slice(0, mid).join(' ');
-                const line2 = words.slice(mid).join(' ');
-                ctx.fillText(line1, 512, 480);
-                ctx.fillText(line2, 512, 560);
-            } else {
-                ctx.fillText(formData.title, 512, 512);
-            }
-
-            // Draw Date
-            if (formData.date) {
-                ctx.font = 'bold 40px Inter, sans-serif';
-                ctx.fillStyle = '#FFD700'; // Gold color for date
-                ctx.fillText(formData.date, 512, 850);
-            }
-
-            // 4. Export to Data URL
-            const finalImageUrl = canvas.toDataURL('image/png');
-
             setFormData(prev => ({
                 ...prev,
-                imageUrl: finalImageUrl
+                imageUrl: imageUrl
             }));
 
         } catch (error: any) {
