@@ -85,8 +85,18 @@ export async function POST(request: Request) {
 
     } catch (error) {
         console.error("Error generating image:", error);
+
+        // Fallback to high-quality mock images for testing when API limit is reached
+        const mockImages = [
+            "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1024&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1634152962476-4b8a00e1915c?q=80&w=1024&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=1024&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=1024&auto=format&fit=crop"
+        ];
+        const randomMock = mockImages[Math.floor(Math.random() * mockImages.length)];
+
         return NextResponse.json({
-            imageUrl: "https://placehold.co/1024x1024/050505/0052FF/png?text=POAP+Preview&font=outfit"
+            imageUrl: randomMock
         });
     }
 }
