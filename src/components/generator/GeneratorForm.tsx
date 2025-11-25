@@ -90,13 +90,15 @@ export function GeneratorForm() {
 
 
             const randomSeed = Math.floor(Math.random() * 1000000);
-            // Pollinations.ai - using default model (Stable Diffusion) as flux is currently unavailable
-            const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&nologo=true&seed=${randomSeed}`;
 
-            console.log('Generating image with URL:', imageUrl);
+            // TEMPORARY: Using placeholder while Pollinations.ai flux servers are down
+            // TODO: Switch to alternative AI service (Segmind, Hugging Face, or self-hosted)
+            const placeholderText = encodeURIComponent(`${formData.title} - ${formData.theme} POAP`);
+            const imageUrl = `https://placehold.co/1024x1024/0a0a0a/0052FF/png?text=${placeholderText}&font=outfit`;
 
-            // Pollinations.ai generates images on-the-fly, so we just set the URL
-            // The browser will handle loading the image
+            console.log('Using placeholder image:', imageUrl);
+
+            // Set the placeholder image
             setFormData(prev => ({
                 ...prev,
                 imageUrl: imageUrl
