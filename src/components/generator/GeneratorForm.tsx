@@ -84,24 +84,36 @@ export function GeneratorForm() {
             const keywordsText = formData.keywords ? `. Visual elements: ${formData.keywords}` : "";
             const dateText = formData.date ? `. Date: "${formData.date}"` : "";
 
-            const encodedPrompt = encodeURIComponent(
-                `Masterpiece, best quality, high resolution. ${styleKeywords}. A premium POAP commemorative badge design. Title text must read: "${formData.title}"${dateText}${keywordsText}. Circular badge format, professional composition, highly detailed, 1024x1024, perfect for NFT.`
-            );
+            const fullPrompt = `${styleKeywords}. A premium POAP commemorative badge design. Title text must read: "${formData.title}"${dateText}${keywordsText}`;
 
+            console.log('Generating with Hugging Face API:', fullPrompt);
 
-            const randomSeed = Math.floor(Math.random() * 1000000);
+            // Call our backend API which uses Hugging Face
+            const response = await fetch('/api/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    prompt: fullPrompt,
+                    style: formData.theme
+                }),
+            });
 
-            // TEMPORARY: Using placeholder while Pollinations.ai flux servers are down
-            // TODO: Switch to alternative AI service (Segmind, Hugging Face, or self-hosted)
-            const placeholderText = encodeURIComponent(`${formData.title} - ${formData.theme} POAP`);
-            const imageUrl = `https://placehold.co/1024x1024/0a0a0a/0052FF/png?text=${placeholderText}&font=outfit`;
+            if (!response.ok) {
+                throw new Error('Failed to generate image');
+            }
 
-            console.log('Using placeholder image:', imageUrl);
+            const data = await response.json();
 
-            // Set the placeholder image
+            if (!data.imageUrl) {
+                throw new Error('No image URL returned');
+            }
+
+            // Set the generated image
             setFormData(prev => ({
                 ...prev,
-                imageUrl: imageUrl
+                imageUrl: data.imageUrl
             }));
 
         } catch (error: any) {

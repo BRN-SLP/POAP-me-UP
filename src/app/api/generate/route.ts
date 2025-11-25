@@ -1,13 +1,12 @@
 import { NextResponse } from "next/server";
-import Replicate from "replicate";
 
-const replicate = new Replicate({
-    auth: process.env.REPLICATE_API_TOKEN,
-});
+// Hugging Face Inference API
+// Free tier: Rate limited but no API key required for public models
+// Using Stable Diffusion XL for high quality images
 
 export async function POST(request: Request) {
     try {
-        const { prompt } = await request.json();
+        const { prompt, style } = await request.json();
 
         if (!prompt) {
             return NextResponse.json(
@@ -16,27 +15,54 @@ export async function POST(request: Request) {
             );
         }
 
-        // Use Pollinations.ai for free, unlimited generation
-        // They support Flux model which is high quality
-        const encodedPrompt = encodeURIComponent(
-            `A high quality, premium POAP badge design. ${prompt}. Vector style, clean lines, circular badge format, vibrant colors, 8k resolution, highly detailed.`
-        );
+        // Hugging Face Inference API endpoint
+        const HF_API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0";
 
-        const randomSeed = Math.floor(Math.random() * 1000000);
-        const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?model=flux&width=1024&height=1024&nologo=true&seed=${randomSeed}`;
+        // Build full prompt with style keywords
+        const fullPrompt = `${prompt}. Circular badge format, professional composition, highly detailed, 1024x1024, perfect for NFT, masterpiece quality`;
 
-        // We can return the URL directly. The frontend will load it.
-        // Pollinations generates on-the-fly when the URL is requested.
+        console.log("Generating with Hugging Face:", fullPrompt);
 
-        console.log("Generated Pollinations URL:", imageUrl);
+        const response = await fetch(HF_API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                inputs: fullPrompt,
+                parameters: {
+                    num_inference_steps: 30,
+                    guidance_scale: 7.5,
+                }
+            }),
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error("Hugging Face API error:", errorText);
+
+            // Return placeholder on error
+            return NextResponse.json({
+                imageUrl: `https://placehold.co/1024x1024/0a0a0a/0052FF/png?text=POAP+Preview&font=outfit`
+            });
+        }
+
+        // Get image blob
+        const imageBlob = await response.blob();
+
+        // Convert blob to base64
+        const arrayBuffer = await imageBlob.arrayBuffer();
+        const base64 = Buffer.from(arrayBuffer).toString('base64');
+        const imageUrl = `data:image/png;base64,${base64}`;
 
         return NextResponse.json({ imageUrl });
 
     } catch (error) {
         console.error("Error generating image:", error);
-        // Fallback just in case
+
+        // Fallback placeholder
         return NextResponse.json({
-            imageUrl: "https://placehold.co/1024x1024/050505/0052FF/png?text=POAP+Preview&font=outfit"
+            imageUrl: `https://placehold.co/1024x1024/0a0a0a/0052FF/png?text=POAP+Preview&font=outfit`
         });
     }
 }
