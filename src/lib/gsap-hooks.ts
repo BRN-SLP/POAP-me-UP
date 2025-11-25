@@ -1,0 +1,149 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+// Register GSAP plugins
+if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger);
+}
+
+/**
+ * Hook for fade-in animation on scroll
+ */
+export function useFadeIn(delay = 0) {
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!ref.current) return;
+
+        const element = ref.current;
+
+        gsap.fromTo(
+            element,
+            {
+                opacity: 0,
+                y: 50,
+            },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: element,
+                    start: "top 80%",
+                    toggleActions: "play none none reverse",
+                },
+            }
+        );
+
+        return () => {
+            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+        };
+    }, [delay]);
+
+    return ref;
+}
+
+/**
+ * Hook for magnetic button effect
+ */
+export function useMagnetic(strength = 0.3) {
+    const ref = useRef<HTMLButtonElement>(null);
+
+    useEffect(() => {
+        if (!ref.current) return;
+
+        const button = ref.current;
+
+        const handleMouseMove = (e: MouseEvent) => {
+            const { left, top, width, height } = button.getBoundingClientRect();
+            const centerX = left + width / 2;
+            const centerY = top + height / 2;
+
+            const deltaX = (e.clientX - centerX) * strength;
+            const deltaY = (e.clientY - centerY) * strength;
+
+            gsap.to(button, {
+                x: deltaX,
+                y: deltaY,
+                duration: 0.3,
+                ease: "power2.out",
+            });
+        };
+
+        const handleMouseLeave = () => {
+            gsap.to(button, {
+                x: 0,
+                y: 0,
+                duration: 0.5,
+                ease: "elastic.out(1, 0.3)",
+            });
+        };
+
+        button.addEventListener("mousemove", handleMouseMove);
+        button.addEventListener("mouseleave", handleMouseLeave);
+
+        return () => {
+            button.removeEventListener("mousemove", handleMouseMove);
+            button.removeEventListener("mouseleave", handleMouseLeave);
+        };
+    }, [strength]);
+
+    return ref;
+}
+
+/**
+ * Hook for smooth reveal animation
+ */
+export function useReveal(duration = 0.8) {
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!ref.current) return;
+
+        const element = ref.current;
+
+        gsap.fromTo(
+            element,
+            {
+                opacity: 0,
+                scale: 0.8,
+            },
+            {
+                opacity: 1,
+                scale: 1,
+                duration,
+                ease: "back.out(1.7)",
+            }
+        );
+    }, [duration]);
+
+    return ref;
+}
+
+/**
+ * Hook for gradient animation
+ */
+export function useGradientAnimation() {
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!ref.current) return;
+
+        const element = ref.current;
+
+        gsap.to(element, {
+            backgroundPosition: "200% center",
+            duration: 3,
+            ease: "none",
+            repeat: -1,
+            yoyo: true,
+        });
+    }, []);
+
+    return ref;
+}

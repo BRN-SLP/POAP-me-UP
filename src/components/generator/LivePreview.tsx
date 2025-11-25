@@ -1,7 +1,8 @@
+"use client";
+
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { useEffect } from "react";
-import { useFadeIn } from "@/hooks/useGSAP";
+import { useReveal } from "@/lib/gsap-hooks";
 
 interface LivePreviewProps {
     title: string;
@@ -19,7 +20,7 @@ export function LivePreview({
     theme,
     imageUrl,
 }: LivePreviewProps) {
-    const imageRef = useFadeIn<HTMLDivElement>(0, 0.6);
+    const imageRevealRef = useReveal(0.6);
 
     const getNetworkIcon = () => {
         switch (network) {
@@ -41,7 +42,7 @@ export function LivePreview({
         )}>
             {imageUrl ? (
                 // AI Generated Image - ensure proper display without cropping
-                <div ref={imageRef} className="w-full h-full flex items-center justify-center">
+                <div ref={imageRevealRef} className="w-full h-full flex items-center justify-center">
                     <img
                         src={imageUrl}
                         alt={title || "POAP Preview"}
