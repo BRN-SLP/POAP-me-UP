@@ -88,8 +88,10 @@ export function GeneratorForm() {
                 `Masterpiece, best quality, high resolution. ${styleKeywords}. A premium POAP commemorative badge design. Title text must read: "${formData.title}"${dateText}${keywordsText}. Circular badge format, professional composition, highly detailed, 1024x1024, perfect for NFT.`
             );
 
+
             const randomSeed = Math.floor(Math.random() * 1000000);
-            const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?model=flux&width=1024&height=1024&nologo=true&enhance=true&seed=${randomSeed}`;
+            // Pollinations.ai - using default model (Stable Diffusion) as flux is currently unavailable
+            const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&nologo=true&seed=${randomSeed}`;
 
             console.log('Generating image with URL:', imageUrl);
 
