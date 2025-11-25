@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,8 +9,6 @@ import { Sparkles, RefreshCw, Download, Wallet, CheckCircle2, Loader2 } from "lu
 import { useAccount, useWriteContract, useWaitForTransactionReceipt, useSwitchChain } from "wagmi";
 import { POAP_ABI, POAP_ADDRESSES } from "@/config/contracts";
 import { base, baseSepolia, optimismSepolia } from "wagmi/chains";
-import { useMagneticButton } from "@/hooks/useGSAP";
-import gsap from "gsap";
 
 export function GeneratorForm() {
     const { address, isConnected, chain } = useAccount();
@@ -51,25 +49,8 @@ export function GeneratorForm() {
     });
 
     const [isGenerating, setIsGenerating] = useState(false);
+
     const [error, setError] = useState<string | null>(null);
-
-    // Magnetic button effect for Generate button
-    const magneticButtonRef = useMagneticButton<HTMLButtonElement>(0.25);
-    const containerRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const ctx = gsap.context(() => {
-            gsap.from(containerRef.current, {
-                y: 30,
-                opacity: 0,
-                duration: 0.8,
-                ease: "power3.out",
-                delay: 0.2
-            });
-        });
-        return () => ctx.revert();
-    }, []);
-
 
     const getTargetChainId = () => {
         switch (formData.network) {
@@ -87,32 +68,6 @@ export function GeneratorForm() {
         pixel: "8-bit pixel art badge, retro gaming aesthetic, pixelated typography, limited color palette like NES or Game Boy, sprite-based design, nostalgic 80s-90s video game style, pixel perfect details, blocky graphics",
         monochrome: "Black and white badge design combining flat design with monochrome aesthetic, high contrast, bold typography, minimalist composition, ink drawing or woodcut style, grayscale only, strong graphic design, timeless elegance",
         abstract: "Abstract art badge design, fluid organic shapes, vibrant color splashes, geometric patterns, surreal composition, artistic interpretation, creative expression, modern art style, dynamic movement, experimental design, psychedelic elements"
-    };
-
-    const generateImage = async (prompt: string, model: string = 'flux'): Promise<string> => {
-        const randomSeed = Math.floor(Math.random() * 1000000);
-        const imageUrl = `https://image.pollinations.ai/prompt/${prompt}?model=${model}&width=1024&height=1024&nologo=true&enhance=true&seed=${randomSeed}`;
-
-        console.log(`Generating image with model ${model}:`, imageUrl);
-
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 30000);
-
-        try {
-            const response = await fetch(imageUrl, {
-                signal: controller.signal,
-                mode: 'cors'
-            });
-            clearTimeout(timeoutId);
-
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
-            }
-            return imageUrl;
-        } catch (error) {
-            clearTimeout(timeoutId);
-            throw error;
-        }
     };
 
     const handleGenerateAI = async () => {
@@ -133,17 +88,13 @@ export function GeneratorForm() {
                 `Masterpiece, best quality, high resolution. ${styleKeywords}. A premium POAP commemorative badge design. Title text must read: "${formData.title}"${dateText}${keywordsText}. Circular badge format, professional composition, highly detailed, 1024x1024, perfect for NFT.`
             );
 
-            let imageUrl: string;
+            const randomSeed = Math.floor(Math.random() * 1000000);
+            const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?model=flux&width=1024&height=1024&nologo=true&enhance=true&seed=${randomSeed}`;
 
-            try {
-                // Try primary model (flux)
-                imageUrl = await generateImage(encodedPrompt, 'flux');
-            } catch (fluxError) {
-                console.warn('Flux model failed, switching to Turbo...', fluxError);
-                // Fallback to turbo model
-                imageUrl = await generateImage(encodedPrompt, 'turbo');
-            }
+            console.log('Generating image with URL:', imageUrl);
 
+            // Pollinations.ai generates images on-the-fly, so we just set the URL
+            // The browser will handle loading the image
             setFormData(prev => ({
                 ...prev,
                 imageUrl: imageUrl
@@ -151,10 +102,7 @@ export function GeneratorForm() {
 
         } catch (error: any) {
             console.error('Generation error:', error);
-            const errorMessage = error.message?.includes('500')
-                ? 'All AI models are currently busy. Please try again in a moment.'
-                : error.message || "Failed to generate image. Please try again.";
-            setError(errorMessage);
+            setError(error.message || "Failed to generate image. Please try again.");
         } finally {
             setIsGenerating(false);
         }
@@ -201,7 +149,7 @@ export function GeneratorForm() {
     };
 
     return (
-        <div ref={containerRef} className="grid gap-8 lg:grid-cols-2 items-start">
+        <div className="grid gap-8 lg:grid-cols-2 items-start">
             <div className="space-y-6">
                 <Card className="glass-panel border-white/10 bg-white/5">
                     <CardHeader>
@@ -302,7 +250,6 @@ export function GeneratorForm() {
 
                 <div className="flex gap-4">
                     <Button
-                        ref={magneticButtonRef}
                         className="flex-1 h-14 text-lg font-bold bg-gradient-to-r from-base via-optimism to-celo hover:opacity-90 hover:scale-[1.02] text-white hover:text-black shadow-lg shadow-base/30 hover:shadow-xl hover:shadow-base/50 transition-all duration-200 rounded-xl"
                         onClick={handleGenerateAI}
                         disabled={isGenerating}
