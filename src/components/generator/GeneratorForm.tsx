@@ -75,6 +75,7 @@ export function GeneratorForm() {
     };
 
     const handleGenerateAI = async () => {
+        console.log('[FRONTEND] Starting generation...');
         setError(null);
         if (!formData.title) {
             setError("Please enter an event title first!");
@@ -82,6 +83,7 @@ export function GeneratorForm() {
         }
 
         setIsGenerating(true);
+        console.log('[FRONTEND] isGenerating set to true');
 
         try {
             const styleKeywords = stylePrompts[formData.theme] || stylePrompts.modern;
@@ -90,7 +92,7 @@ export function GeneratorForm() {
 
             const fullPrompt = `${styleKeywords}. A premium POAP commemorative badge design. Title text must read: "${formData.title}"${dateText}${keywordsText}`;
 
-            console.log('Generating with Hugging Face API:', fullPrompt);
+            console.log('[FRONTEND] Calling API with prompt:', fullPrompt.substring(0, 100));
 
             // Call our backend API which uses Hugging Face
             const response = await fetch('/api/generate', {
@@ -104,26 +106,38 @@ export function GeneratorForm() {
                 }),
             });
 
+            console.log('[FRONTEND] API response status:', response.status);
+
             if (!response.ok) {
-                throw new Error('Failed to generate image');
+                throw new Error(`API returned ${response.status}`);
             }
 
             const data = await response.json();
+            console.log('[FRONTEND] API response data:', data);
 
             if (!data.imageUrl) {
                 throw new Error('No image URL returned');
             }
 
+            console.log('[FRONTEND] Setting imageUrl:', data.imageUrl);
+
             // Set the generated image
-            setFormData(prev => ({
-                ...prev,
-                imageUrl: data.imageUrl
-            }));
+            setFormData(prev => {
+                const newData = {
+                    ...prev,
+                    imageUrl: data.imageUrl
+                };
+                console.log('[FRONTEND] New formData:', newData);
+                return newData;
+            });
+
+            console.log('[FRONTEND] Generation SUCCESS!');
 
         } catch (error: any) {
-            console.error('Generation error:', error);
+            console.error('[FRONTEND] Generation error:', error);
             setError(error.message || "Failed to generate image. Please try again.");
         } finally {
+            console.log('[FRONTEND] Setting isGenerating to false');
             setIsGenerating(false);
         }
     };
