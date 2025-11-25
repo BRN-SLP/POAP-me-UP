@@ -4,19 +4,12 @@ import Link from "next/link";
 import { ArrowRight, Zap, Layers, Coins } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BrandHighlighter } from "@/components/ui/BrandHighlighter";
-import { useFadeIn, useMagnetic, useGradientAnimation, useFloating } from "@/lib/gsap-hooks";
+import { useFadeIn, useFloating } from "@/lib/gsap-hooks";
 
 export default function Home() {
     const heroRef = useFadeIn(0);
     const subtitleRef = useFadeIn(0.2);
     const buttonsRef = useFadeIn(0.4);
-
-    // Magnetic buttons
-    const generateBtnRef = useMagnetic(0.4);
-    const learnMoreBtnRef = useMagnetic(0.4);
-
-    // Animated gradient text
-    const gradientTextRef = useGradientAnimation();
 
     // Floating background elements
     const blob1Ref = useFloating(4, 20);
@@ -34,7 +27,7 @@ export default function Home() {
 
                 <div className="relative z-10 max-w-5xl mx-auto space-y-10">
                     <h1 ref={heroRef} className="text-7xl md:text-9xl font-heading font-bold tracking-tighter text-white leading-[0.9]">
-                        POAP me <span ref={gradientTextRef} className="text-transparent bg-clip-text bg-gradient-to-r from-base via-optimism to-celo bg-[length:200%_auto]">UP</span>
+                        POAP me <span className="text-transparent bg-clip-text bg-gradient-to-r from-base via-optimism to-celo bg-[length:200%_auto]">UP</span>
                     </h1>
 
                     <p ref={subtitleRef} className="text-xl md:text-3xl text-white/60 max-w-3xl mx-auto leading-relaxed font-light">
@@ -44,13 +37,13 @@ export default function Home() {
 
                     <div ref={buttonsRef} className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-10">
                         <Link href="/generator">
-                            <Button ref={generateBtnRef} size="lg" className="h-16 px-10 text-xl rounded-full bg-base hover:bg-base-neon text-white btn-glow-base transition-all hover:scale-105 border-0 relative overflow-hidden group">
+                            <Button size="lg" className="h-16 px-10 text-xl rounded-full bg-base hover:bg-base-neon text-white btn-glow-base transition-all hover:scale-105 border-0 relative overflow-hidden group">
                                 <span className="relative z-10 flex items-center">Start Generating <ArrowRight className="ml-2 h-6 w-6 group-hover:translate-x-1 transition-transform" /></span>
                                 <div className="absolute inset-0 bg-gradient-to-r from-base via-optimism to-celo opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                             </Button>
                         </Link>
                         <Link href="/about">
-                            <Button ref={learnMoreBtnRef} variant="outline" size="lg" className="h-16 px-10 text-xl rounded-full border-white/10 bg-white/5 hover:bg-white/10 backdrop-blur-sm text-white transition-all hover:scale-105">
+                            <Button variant="outline" size="lg" className="h-16 px-10 text-xl rounded-full border-white/10 bg-white/5 hover:bg-white/10 backdrop-blur-sm text-white transition-all hover:scale-105">
                                 Learn More
                             </Button>
                         </Link>

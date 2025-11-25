@@ -24,8 +24,6 @@ export function GeneratorForm() {
     const [isBridging, setIsBridging] = useState(false);
 
     const formRef = useFadeIn(0.2);
-    const generateBtnRef = useMagnetic(0.3);
-    const clearBtnRef = useMagnetic(0.2);
 
     useEffect(() => {
         if (isConfirmed && receipt) {
@@ -272,7 +270,6 @@ export function GeneratorForm() {
 
                 <div className="flex gap-4">
                     <Button
-                        ref={generateBtnRef}
                         className="flex-1 h-14 text-lg font-bold bg-gradient-to-r from-base via-optimism to-celo hover:opacity-90 hover:scale-[1.02] text-white hover:text-black shadow-lg shadow-base/30 hover:shadow-xl hover:shadow-base/50 transition-all duration-200 rounded-xl relative overflow-hidden group"
                         onClick={handleGenerateAI}
                         disabled={isGenerating}
@@ -290,7 +287,6 @@ export function GeneratorForm() {
 
                     {formData.imageUrl && (
                         <Button
-                            ref={clearBtnRef}
                             variant="outline"
                             className="h-14 px-6 border-white/10 hover:bg-white/10 text-white"
                             onClick={handleClearImage}
