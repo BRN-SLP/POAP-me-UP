@@ -3,17 +3,33 @@
 import Link from "next/link";
 import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
 import { Wallet } from "lucide-react";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
 
 export function Navbar() {
     const { open } = useAppKit();
     const { address, isConnected } = useAppKitAccount();
+    const navRef = useRef<HTMLElement>(null);
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            gsap.from(navRef.current, {
+                y: -100,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out",
+                delay: 0.2
+            });
+        });
+        return () => ctx.revert();
+    }, []);
 
     const formatAddress = (addr: string) => {
         return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
     };
 
     return (
-        <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/80 backdrop-blur-xl">
+        <nav ref={navRef} className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/80 backdrop-blur-xl">
             <div className="container mx-auto px-6 h-16 flex items-center justify-between">
                 {/* Logo Area */}
                 <Link href="/" className="flex items-center gap-3 group">

@@ -10,6 +10,7 @@ import { useAccount, useWriteContract, useWaitForTransactionReceipt, useSwitchCh
 import { POAP_ABI, POAP_ADDRESSES } from "@/config/contracts";
 import { base, baseSepolia, optimismSepolia } from "wagmi/chains";
 import { useMagneticButton } from "@/hooks/useGSAP";
+import gsap from "gsap";
 
 export function GeneratorForm() {
     const { address, isConnected, chain } = useAccount();
@@ -54,6 +55,20 @@ export function GeneratorForm() {
 
     // Magnetic button effect for Generate button
     const magneticButtonRef = useMagneticButton<HTMLButtonElement>(0.25);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            gsap.from(containerRef.current, {
+                y: 30,
+                opacity: 0,
+                duration: 0.8,
+                ease: "power3.out",
+                delay: 0.2
+            });
+        });
+        return () => ctx.revert();
+    }, []);
 
 
     const getTargetChainId = () => {
@@ -178,7 +193,7 @@ export function GeneratorForm() {
     };
 
     return (
-        <div className="grid gap-8 lg:grid-cols-2 items-start">
+        <div ref={containerRef} className="grid gap-8 lg:grid-cols-2 items-start">
             <div className="space-y-6">
                 <Card className="glass-panel border-white/10 bg-white/5">
                     <CardHeader>
