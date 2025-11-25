@@ -129,7 +129,7 @@ export function useReveal(duration = 0.8) {
  * Hook for gradient animation
  */
 export function useGradientAnimation() {
-    const ref = useRef<HTMLDivElement>(null);
+    const ref = useRef<HTMLSpanElement>(null);
 
     useEffect(() => {
         if (!ref.current) return;
@@ -144,6 +144,29 @@ export function useGradientAnimation() {
             yoyo: true,
         });
     }, []);
+
+    return ref;
+}
+
+/**
+ * Hook for floating animation (up and down)
+ */
+export function useFloating(duration = 2, distance = 10) {
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!ref.current) return;
+
+        const element = ref.current;
+
+        gsap.to(element, {
+            y: distance,
+            duration: duration,
+            ease: "sine.inOut",
+            repeat: -1,
+            yoyo: true,
+        });
+    }, [duration, distance]);
 
     return ref;
 }

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -9,6 +10,7 @@ import { Sparkles, RefreshCw, Download, Wallet, CheckCircle2, Loader2 } from "lu
 import { useAccount, useWriteContract, useWaitForTransactionReceipt, useSwitchChain } from "wagmi";
 import { POAP_ABI, POAP_ADDRESSES } from "@/config/contracts";
 import { base, baseSepolia, optimismSepolia } from "wagmi/chains";
+import { useFadeIn, useMagnetic } from "@/lib/gsap-hooks";
 
 export function GeneratorForm() {
     const { address, isConnected, chain } = useAccount();
@@ -20,6 +22,10 @@ export function GeneratorForm() {
 
     const [mintedTokenId, setMintedTokenId] = useState<string | null>(null);
     const [isBridging, setIsBridging] = useState(false);
+
+    const formRef = useFadeIn(0.2);
+    const generateBtnRef = useMagnetic(0.3);
+    const clearBtnRef = useMagnetic(0.2);
 
     useEffect(() => {
         if (isConfirmed && receipt) {
@@ -165,9 +171,9 @@ export function GeneratorForm() {
     };
 
     return (
-        <div className="grid gap-8 lg:grid-cols-2 items-start">
+        <div ref={formRef} className="grid gap-8 lg:grid-cols-2 items-start">
             <div className="space-y-6">
-                <Card className="glass-panel border-white/10 bg-white/5">
+                <Card className="glass-panel border-white/10 bg-white/5 backdrop-blur-xl overflow-hidden">
                     <CardHeader>
                         <CardTitle className="text-2xl font-heading">POAP Details</CardTitle>
                     </CardHeader>
@@ -266,20 +272,25 @@ export function GeneratorForm() {
 
                 <div className="flex gap-4">
                     <Button
-                        className="flex-1 h-14 text-lg font-bold bg-gradient-to-r from-base via-optimism to-celo hover:opacity-90 hover:scale-[1.02] text-white hover:text-black shadow-lg shadow-base/30 hover:shadow-xl hover:shadow-base/50 transition-all duration-200 rounded-xl"
+                        ref={generateBtnRef}
+                        className="flex-1 h-14 text-lg font-bold bg-gradient-to-r from-base via-optimism to-celo hover:opacity-90 hover:scale-[1.02] text-white hover:text-black shadow-lg shadow-base/30 hover:shadow-xl hover:shadow-base/50 transition-all duration-200 rounded-xl relative overflow-hidden group"
                         onClick={handleGenerateAI}
                         disabled={isGenerating}
                     >
-                        {isGenerating ? (
-                            <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
-                        ) : (
-                            <Sparkles className="mr-2 h-5 w-5" />
-                        )}
-                        {isGenerating ? "Generating..." : "Generate with AI"}
+                        <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                        <span className="relative z-10 flex items-center justify-center">
+                            {isGenerating ? (
+                                <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
+                            ) : (
+                                <Sparkles className="mr-2 h-5 w-5" />
+                            )}
+                            {isGenerating ? "Generating..." : "Generate with AI"}
+                        </span>
                     </Button>
 
                     {formData.imageUrl && (
                         <Button
+                            ref={clearBtnRef}
                             variant="outline"
                             className="h-14 px-6 border-white/10 hover:bg-white/10 text-white"
                             onClick={handleClearImage}

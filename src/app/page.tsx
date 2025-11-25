@@ -4,24 +4,37 @@ import Link from "next/link";
 import { ArrowRight, Zap, Layers, Coins } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BrandHighlighter } from "@/components/ui/BrandHighlighter";
-import { useFadeIn, useMagnetic } from "@/lib/gsap-hooks";
+import { useFadeIn, useMagnetic, useGradientAnimation, useFloating } from "@/lib/gsap-hooks";
 
 export default function Home() {
     const heroRef = useFadeIn(0);
     const subtitleRef = useFadeIn(0.2);
     const buttonsRef = useFadeIn(0.4);
 
-    return (
-        <div className="flex flex-col min-h-screen">
-            {/* Hero Section */}
-            <section className="flex-1 flex flex-col items-center justify-center px-4 py-32 text-center relative overflow-hidden">
+    // Magnetic buttons
+    const generateBtnRef = useMagnetic(0.4);
+    const learnMoreBtnRef = useMagnetic(0.4);
 
-                {/* Background Glow */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-base/10 rounded-full blur-[120px] -z-10" />
+    // Animated gradient text
+    const gradientTextRef = useGradientAnimation();
+
+    // Floating background elements
+    const blob1Ref = useFloating(4, 20);
+    const blob2Ref = useFloating(5, -20);
+
+    return (
+        <div className="flex flex-col min-h-screen relative overflow-hidden">
+            {/* Hero Section */}
+            <section className="flex-1 flex flex-col items-center justify-center px-4 py-32 text-center relative z-10">
+
+                {/* Background Glows */}
+                <div ref={blob1Ref} className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-base/20 rounded-full blur-[100px] -z-10 opacity-50 mix-blend-screen" />
+                <div ref={blob2Ref} className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-optimism/20 rounded-full blur-[120px] -z-10 opacity-50 mix-blend-screen" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-celo/10 rounded-full blur-[120px] -z-20" />
 
                 <div className="relative z-10 max-w-5xl mx-auto space-y-10">
                     <h1 ref={heroRef} className="text-7xl md:text-9xl font-heading font-bold tracking-tighter text-white leading-[0.9]">
-                        POAP me <span className="text-gradient-base">UP</span>
+                        POAP me <span ref={gradientTextRef} className="text-transparent bg-clip-text bg-gradient-to-r from-base via-optimism to-celo bg-[length:200%_auto]">UP</span>
                     </h1>
 
                     <p ref={subtitleRef} className="text-xl md:text-3xl text-white/60 max-w-3xl mx-auto leading-relaxed font-light">
@@ -31,12 +44,13 @@ export default function Home() {
 
                     <div ref={buttonsRef} className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-10">
                         <Link href="/generator">
-                            <Button size="lg" className="h-16 px-10 text-xl rounded-full bg-base hover:bg-base-neon text-white btn-glow-base transition-all hover:scale-105 border-0">
-                                Start Generating <ArrowRight className="ml-2 h-6 w-6" />
+                            <Button ref={generateBtnRef} size="lg" className="h-16 px-10 text-xl rounded-full bg-base hover:bg-base-neon text-white btn-glow-base transition-all hover:scale-105 border-0 relative overflow-hidden group">
+                                <span className="relative z-10 flex items-center">Start Generating <ArrowRight className="ml-2 h-6 w-6 group-hover:translate-x-1 transition-transform" /></span>
+                                <div className="absolute inset-0 bg-gradient-to-r from-base via-optimism to-celo opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                             </Button>
                         </Link>
                         <Link href="/about">
-                            <Button variant="outline" size="lg" className="h-16 px-10 text-xl rounded-full border-white/10 bg-white/5 hover:bg-white/10 backdrop-blur-sm text-white transition-all hover:scale-105">
+                            <Button ref={learnMoreBtnRef} variant="outline" size="lg" className="h-16 px-10 text-xl rounded-full border-white/10 bg-white/5 hover:bg-white/10 backdrop-blur-sm text-white transition-all hover:scale-105">
                                 Learn More
                             </Button>
                         </Link>
