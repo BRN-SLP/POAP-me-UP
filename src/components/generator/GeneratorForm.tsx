@@ -37,7 +37,7 @@ export function GeneratorForm() {
         title: string;
         date: string;
         network: "base" | "celo" | "optimism";
-        theme: "classic" | "modern" | "flat" | "pixel" | "monochrome";
+        theme: "classic" | "modern" | "flat" | "pixel" | "monochrome" | "abstract";
         keywords: string;
         imageUrl?: string;
     }>({
@@ -66,7 +66,8 @@ export function GeneratorForm() {
         modern: "Contemporary sleek badge design, vibrant gradient backgrounds, clean sans-serif typography, geometric shapes, bold colors, minimalist composition, tech-forward aesthetic",
         flat: "Flat design combined with minimalistic aesthetic, simple geometric shapes, limited color palette, clean vector art, no shadows or gradients, modern sans-serif fonts, Scandinavian design influence",
         pixel: "8-bit pixel art badge, retro gaming aesthetic, pixelated typography, limited color palette like NES or Game Boy, sprite-based design, nostalgic 80s-90s video game style, pixel perfect details, blocky graphics",
-        monochrome: "Black and white badge design combining flat design with monochrome aesthetic, high contrast, bold typography, minimalist composition, ink drawing or woodcut style, grayscale only, strong graphic design, timeless elegance"
+        monochrome: "Black and white badge design combining flat design with monochrome aesthetic, high contrast, bold typography, minimalist composition, ink drawing or woodcut style, grayscale only, strong graphic design, timeless elegance",
+        abstract: "Abstract art badge design, fluid organic shapes, vibrant color splashes, geometric patterns, surreal composition, artistic interpretation, creative expression, modern art style, dynamic movement, experimental design, psychedelic elements"
     };
 
     const handleGenerateAI = async () => {
@@ -123,7 +124,10 @@ export function GeneratorForm() {
 
         } catch (error: any) {
             console.error('Generation error:', error);
-            setError(error.message || "Failed to generate image. Please try again.");
+            const errorMessage = error.message?.includes('500')
+                ? 'AI service temporarily unavailable. Please try again in a moment.'
+                : error.message || "Failed to generate image. Please try again.";
+            setError(errorMessage);
         } finally {
             setIsGenerating(false);
         }
@@ -233,7 +237,7 @@ export function GeneratorForm() {
                         <div className="space-y-3">
                             <label className="text-sm font-medium text-white/70 uppercase tracking-wider">Theme Style</label>
                             <div className="grid grid-cols-3 gap-2">
-                                {(["classic", "modern", "flat", "pixel", "monochrome"] as const).map((theme) => (
+                                {(["classic", "modern", "flat", "pixel", "monochrome", "abstract"] as const).map((theme) => (
                                     <Button
                                         key={theme}
                                         variant={formData.theme === theme ? "default" : "ghost"}
@@ -271,7 +275,7 @@ export function GeneratorForm() {
 
                 <div className="flex gap-4">
                     <Button
-                        className="flex-1 h-14 text-lg font-bold bg-gradient-to-r from-base via-optimism to-celo hover:opacity-90 hover:scale-[1.02] text-white shadow-lg shadow-base/30 hover:shadow-xl hover:shadow-base/50 transition-all duration-200 rounded-xl"
+                        className="flex-1 h-14 text-lg font-bold bg-gradient-to-r from-base via-optimism to-celo hover:opacity-90 hover:scale-[1.02] text-white hover:text-black shadow-lg shadow-base/30 hover:shadow-xl hover:shadow-base/50 transition-all duration-200 rounded-xl"
                         onClick={handleGenerateAI}
                         disabled={isGenerating}
                     >
