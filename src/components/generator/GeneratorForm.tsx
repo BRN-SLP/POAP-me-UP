@@ -90,22 +90,40 @@ export function GeneratorForm() {
             const randomSeed = Math.floor(Math.random() * 1000000);
             const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?model=flux&width=1024&height=1024&nologo=true&enhance=true&seed=${randomSeed}`;
 
-            const img = new Image();
-            img.src = imageUrl;
+            console.log('Generating image with URL:', imageUrl);
 
-            await new Promise((resolve, reject) => {
-                img.onload = resolve;
-                img.onerror = () => reject(new Error("Failed to load image from Pollinations"));
-            });
+            // Use fetch with timeout to check if image is accessible
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
 
-            setFormData(prev => ({
-                ...prev,
-                imageUrl: imageUrl
-            }));
+            try {
+                const response = await fetch(imageUrl, {
+                    signal: controller.signal,
+                    mode: 'cors'
+                });
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    throw new Error(`Image generation failed: ${response.status}`);
+                }
+
+                // Image is accessible, set it
+                setFormData(prev => ({
+                    ...prev,
+                    imageUrl: imageUrl
+                }));
+
+            } catch (fetchError: any) {
+                clearTimeout(timeoutId);
+                if (fetchError.name === 'AbortError') {
+                    throw new Error('Image generation timed out. Please try again.');
+                }
+                throw fetchError;
+            }
 
         } catch (error: any) {
-            console.error(error);
-            setError("Failed to generate image. Please try again.");
+            console.error('Generation error:', error);
+            setError(error.message || "Failed to generate image. Please try again.");
         } finally {
             setIsGenerating(false);
         }
