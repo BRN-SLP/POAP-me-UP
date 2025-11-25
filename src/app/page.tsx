@@ -4,9 +4,11 @@ import Link from "next/link";
 import { ArrowRight, Zap, Layers, Coins } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BrandHighlighter } from "@/components/ui/BrandHighlighter";
-import { useFadeIn, useFloating } from "@/lib/gsap-hooks";
+import { useFadeIn, useFloating, useHeroScroll } from "@/lib/gsap-hooks";
+import { useRef } from "react";
 
 export default function Home() {
+    const containerRef = useRef<HTMLDivElement>(null);
     const heroRef = useFadeIn(0);
     const subtitleRef = useFadeIn(0.2);
     const buttonsRef = useFadeIn(0.4);
@@ -15,10 +17,13 @@ export default function Home() {
     const blob1Ref = useFloating(4, 20);
     const blob2Ref = useFloating(5, -20);
 
+    // Advanced Scroll Animation
+    useHeroScroll(containerRef, heroRef, [blob1Ref, blob2Ref]);
+
     return (
         <div className="flex flex-col min-h-screen relative overflow-hidden">
             {/* Hero Section */}
-            <section className="flex-1 flex flex-col items-center justify-center px-4 py-32 text-center relative z-10">
+            <section ref={containerRef} className="flex-1 flex flex-col items-center justify-center px-4 py-32 text-center relative z-10 min-h-screen">
 
                 {/* Background Glows */}
                 <div ref={blob1Ref} className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-base/20 rounded-full blur-[100px] -z-10 opacity-50 mix-blend-screen" />
@@ -27,7 +32,7 @@ export default function Home() {
 
                 <div className="relative z-10 max-w-5xl mx-auto space-y-10">
                     <h1 ref={heroRef} className="text-7xl md:text-9xl font-heading font-bold tracking-tighter text-white leading-[0.9]">
-                        POAP me <span className="text-transparent bg-clip-text bg-gradient-to-r from-base via-optimism to-celo bg-[length:200%_auto]">UP</span>
+                        POAP me <span className="text-transparent bg-clip-text bg-gradient-to-r from-base via-optimism to-celo">UP</span>
                     </h1>
 
                     <p ref={subtitleRef} className="text-xl md:text-3xl text-white/60 max-w-3xl mx-auto leading-relaxed font-light">

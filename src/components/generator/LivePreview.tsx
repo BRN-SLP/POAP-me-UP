@@ -48,6 +48,13 @@ export function LivePreview({
                         alt={title || "POAP Preview"}
                         className="max-w-full max-h-full object-contain rounded-lg"
                         style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                        onError={(e) => {
+                            console.error('Image failed to load:', imageUrl);
+                            console.error('Error event:', e);
+                        }}
+                        onLoad={() => {
+                            console.log('Image loaded successfully:', imageUrl);
+                        }}
                     />
                 </div>
             ) : (

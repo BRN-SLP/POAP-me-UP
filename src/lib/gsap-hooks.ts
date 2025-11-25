@@ -170,3 +170,49 @@ export function useFloating(duration = 2, distance = 10) {
 
     return ref;
 }
+
+/**
+ * Hook for Hero section scroll effects (Portal effect)
+ */
+export function useHeroScroll(
+    heroRef: React.RefObject<HTMLElement | null>,
+    titleRef: React.RefObject<HTMLElement | null>,
+    blobsRef: React.RefObject<HTMLElement | null>[]
+) {
+    useEffect(() => {
+        if (!heroRef.current || !titleRef.current) return;
+
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: heroRef.current,
+                start: "top top",
+                end: "bottom top",
+                scrub: 1,
+            }
+        });
+
+        // Title moves up and fades out
+        tl.to(titleRef.current, {
+            scale: 0.8,
+            opacity: 0,
+            y: -100,
+            ease: "none",
+        }, 0);
+
+        // Blobs expand and rotate
+        blobsRef.forEach((blob, i) => {
+            if (blob.current) {
+                tl.to(blob.current, {
+                    scale: 2,
+                    rotation: i % 2 === 0 ? 90 : -90,
+                    opacity: 0,
+                    ease: "none",
+                }, 0);
+            }
+        });
+
+        return () => {
+            tl.kill();
+        };
+    }, [heroRef, titleRef, blobsRef]);
+}
