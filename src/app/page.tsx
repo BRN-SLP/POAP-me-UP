@@ -32,7 +32,7 @@ export default function Home() {
 
                 <div className="relative z-10 max-w-5xl mx-auto space-y-10">
                     <h1 ref={heroRef} className="text-7xl md:text-9xl font-heading font-bold tracking-tighter text-white leading-[0.9]">
-                        POAP me <span className="text-transparent bg-clip-text bg-gradient-to-r from-base via-optimism to-celo">UP</span>
+                        POAP me <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0052FF] via-[#FF0420] to-[#FCFF52]">UP</span>
                     </h1>
 
                     <p ref={subtitleRef} className="text-xl md:text-3xl text-white/60 max-w-3xl mx-auto leading-relaxed font-light">
