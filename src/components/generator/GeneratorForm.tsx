@@ -37,15 +37,15 @@ export function GeneratorForm() {
         title: string;
         date: string;
         network: "base" | "celo" | "optimism";
-        theme: string;
-        color: string;
+        theme: "classic" | "modern" | "flat" | "pixel" | "monochrome";
+        keywords: string;
         imageUrl?: string;
     }>({
         title: "",
         date: "",
         network: "base",
         theme: "modern",
-        color: "#0052FF",
+        keywords: "",
     });
 
     const [isGenerating, setIsGenerating] = useState(false);
@@ -60,6 +60,15 @@ export function GeneratorForm() {
         }
     };
 
+    // Style-specific prompt templates
+    const stylePrompts = {
+        classic: "Vintage commemorative badge with ornate borders, traditional heraldic style, elegant serif typography, gold and navy accents, embossed details, formal and prestigious design",
+        modern: "Contemporary sleek badge design, vibrant gradient backgrounds, clean sans-serif typography, geometric shapes, bold colors, minimalist composition, tech-forward aesthetic",
+        flat: "Flat design combined with minimalistic aesthetic, simple geometric shapes, limited color palette, clean vector art, no shadows or gradients, modern sans-serif fonts, Scandinavian design influence",
+        pixel: "8-bit pixel art badge, retro gaming aesthetic, pixelated typography, limited color palette like NES or Game Boy, sprite-based design, nostalgic 80s-90s video game style, pixel perfect details, blocky graphics",
+        monochrome: "Black and white badge design combining flat design with monochrome aesthetic, high contrast, bold typography, minimalist composition, ink drawing or woodcut style, grayscale only, strong graphic design, timeless elegance"
+    };
+
     const handleGenerateAI = async () => {
         setError(null);
         if (!formData.title) {
@@ -70,17 +79,17 @@ export function GeneratorForm() {
         setIsGenerating(true);
 
         try {
-            // Client-side generation using Pollinations.ai
-            // This avoids server-side timeouts and uses the user's browser directly
+            const styleKeywords = stylePrompts[formData.theme];
+            const keywordsText = formData.keywords ? `. Visual elements: ${formData.keywords}` : "";
+            const dateText = formData.date ? `. Date: "${formData.date}"` : "";
+
             const encodedPrompt = encodeURIComponent(
-                `Masterpiece, best quality, high resolution. A premium POAP commemorative badge design. Title: "${formData.title}". Date: "${formData.date}". ${formData.theme} style. Circular badge format, professional typography, clean layout, vibrant colors, vector art style, highly detailed, 8k resolution, unreal engine 5 render.`
+                `Masterpiece, best quality, high resolution. ${styleKeywords}. A premium POAP commemorative badge design. Title text must read: "${formData.title}"${dateText}${keywordsText}. Circular badge format, professional composition, highly detailed, 1024x1024, perfect for NFT.`
             );
 
             const randomSeed = Math.floor(Math.random() * 1000000);
-            // Using FLUX.1-dev for superior text rendering in badges
             const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?model=flux&width=1024&height=1024&nologo=true&enhance=true&seed=${randomSeed}`;
 
-            // Preload image to ensure it's ready before showing
             const img = new Image();
             img.src = imageUrl;
 
@@ -205,14 +214,14 @@ export function GeneratorForm() {
 
                         <div className="space-y-3">
                             <label className="text-sm font-medium text-white/70 uppercase tracking-wider">Theme Style</label>
-                            <div className="flex gap-3">
-                                {["modern", "classic", "pixel"].map((theme) => (
+                            <div className="grid grid-cols-3 gap-2">
+                                {(["classic", "modern", "flat", "pixel", "monochrome"] as const).map((theme) => (
                                     <Button
                                         key={theme}
                                         variant={formData.theme === theme ? "default" : "ghost"}
                                         size="sm"
                                         onClick={() => setFormData({ ...formData, theme })}
-                                        className={`capitalize flex-1 h-10 font-medium ${formData.theme === theme
+                                        className={`capitalize h-10 font-medium ${formData.theme === theme
                                             ? "bg-white/90 text-black hover:bg-white"
                                             : "text-white/60 hover:text-white hover:bg-white/10 border border-white/10"
                                             }`}
@@ -224,22 +233,14 @@ export function GeneratorForm() {
                         </div>
 
                         <div className="space-y-3">
-                            <label className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Base Color</label>
-                            <div className="flex gap-3">
-                                {["#0052FF", "#FCFF52", "#FF0420", "#7C3AED", "#10B981"].map(
-                                    (color) => (
-                                        <button
-                                            key={color}
-                                            className={`w-10 h-10 rounded-full border-2 transition-all ${formData.color === color
-                                                ? "border-white scale-110 ring-2 ring-white/20"
-                                                : "border-transparent hover:scale-105"
-                                                }`}
-                                            style={{ backgroundColor: color }}
-                                            onClick={() => setFormData(prev => ({ ...prev, color }))}
-                                        />
-                                    )
-                                )}
-                            </div>
+                            <label className="text-sm font-medium text-white/70 uppercase tracking-wider">Keywords (Optional)</label>
+                            <Input
+                                placeholder="e.g., clouds, boat, fish, summer"
+                                value={formData.keywords}
+                                onChange={(e) => setFormData({ ...formData, keywords: e.target.value })}
+                                className="bg-black/40 border-white/20 focus:border-white/40 h-12 text-white placeholder:text-white/30"
+                            />
+                            <p className="text-xs text-white/50">Add visual themes and elements for your POAP</p>
                         </div>
                     </CardContent>
                 </Card>
@@ -252,7 +253,7 @@ export function GeneratorForm() {
 
                 <div className="flex gap-4">
                     <Button
-                        className="flex-1 h-14 text-lg font-bold bg-gradient-to-r from-base via-optimism to-celo hover:opacity-90 transition-opacity rounded-xl"
+                        className="flex-1 h-14 text-lg font-bold bg-gradient-to-r from-base via-optimism to-celo hover:from-base-neon hover:via-optimism-neon hover:to-celo text-white shadow-lg shadow-base/50 hover:shadow-xl hover:shadow-base/70 transition-all rounded-xl"
                         onClick={handleGenerateAI}
                         disabled={isGenerating}
                     >
