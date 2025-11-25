@@ -9,6 +9,7 @@ import { Sparkles, RefreshCw, Download, Wallet, CheckCircle2, Loader2 } from "lu
 import { useAccount, useWriteContract, useWaitForTransactionReceipt, useSwitchChain } from "wagmi";
 import { POAP_ABI, POAP_ADDRESSES } from "@/config/contracts";
 import { base, baseSepolia, optimismSepolia } from "wagmi/chains";
+import { useMagneticButton } from "@/hooks/useGSAP";
 
 export function GeneratorForm() {
     const { address, isConnected, chain } = useAccount();
@@ -49,8 +50,11 @@ export function GeneratorForm() {
     });
 
     const [isGenerating, setIsGenerating] = useState(false);
-
     const [error, setError] = useState<string | null>(null);
+
+    // Magnetic button effect for Generate button
+    const magneticButtonRef = useMagneticButton<HTMLButtonElement>(0.25);
+
 
     const getTargetChainId = () => {
         switch (formData.network) {
@@ -275,6 +279,7 @@ export function GeneratorForm() {
 
                 <div className="flex gap-4">
                     <Button
+                        ref={magneticButtonRef}
                         className="flex-1 h-14 text-lg font-bold bg-gradient-to-r from-base via-optimism to-celo hover:opacity-90 hover:scale-[1.02] text-white hover:text-black shadow-lg shadow-base/30 hover:shadow-xl hover:shadow-base/50 transition-all duration-200 rounded-xl"
                         onClick={handleGenerateAI}
                         disabled={isGenerating}

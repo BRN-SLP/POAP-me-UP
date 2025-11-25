@@ -1,5 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { useEffect } from "react";
+import { useFadeIn } from "@/hooks/useGSAP";
 
 interface LivePreviewProps {
     title: string;
@@ -17,6 +19,8 @@ export function LivePreview({
     theme,
     imageUrl,
 }: LivePreviewProps) {
+    const imageRef = useFadeIn<HTMLDivElement>(0, 0.6);
+
     const getNetworkIcon = () => {
         switch (network) {
             case "base":
@@ -37,7 +41,7 @@ export function LivePreview({
         )}>
             {imageUrl ? (
                 // AI Generated Image - ensure proper display without cropping
-                <div className="w-full h-full flex items-center justify-center">
+                <div ref={imageRef} className="w-full h-full flex items-center justify-center">
                     <img
                         src={imageUrl}
                         alt={title || "POAP Preview"}
