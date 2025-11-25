@@ -79,7 +79,7 @@ export function GeneratorForm() {
         setIsGenerating(true);
 
         try {
-            const styleKeywords = stylePrompts[formData.theme];
+            const styleKeywords = stylePrompts[formData.theme] || stylePrompts.modern;
             const keywordsText = formData.keywords ? `. Visual elements: ${formData.keywords}` : "";
             const dateText = formData.date ? `. Date: "${formData.date}"` : "";
 
@@ -253,7 +253,7 @@ export function GeneratorForm() {
 
                 <div className="flex gap-4">
                     <Button
-                        className="flex-1 h-14 text-lg font-bold bg-gradient-to-r from-base via-optimism to-celo hover:from-base-neon hover:via-optimism-neon hover:to-celo text-white shadow-lg shadow-base/50 hover:shadow-xl hover:shadow-base/70 transition-all rounded-xl"
+                        className="flex-1 h-14 text-lg font-bold bg-gradient-to-r from-base via-optimism to-celo hover:opacity-90 hover:scale-[1.02] text-white shadow-lg shadow-base/30 hover:shadow-xl hover:shadow-base/50 transition-all duration-200 rounded-xl"
                         onClick={handleGenerateAI}
                         disabled={isGenerating}
                     >
