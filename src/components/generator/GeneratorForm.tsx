@@ -89,6 +89,32 @@ export function GeneratorForm() {
         abstract: "Abstract art badge design, fluid organic shapes, vibrant color splashes, geometric patterns, surreal composition, artistic interpretation, creative expression, modern art style, dynamic movement, experimental design, psychedelic elements"
     };
 
+    const generateImage = async (prompt: string, model: string = 'flux'): Promise<string> => {
+        const randomSeed = Math.floor(Math.random() * 1000000);
+        const imageUrl = `https://image.pollinations.ai/prompt/${prompt}?model=${model}&width=1024&height=1024&nologo=true&enhance=true&seed=${randomSeed}`;
+
+        console.log(`Generating image with model ${model}:`, imageUrl);
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+        try {
+            const response = await fetch(imageUrl, {
+                signal: controller.signal,
+                mode: 'cors'
+            });
+            clearTimeout(timeoutId);
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+            return imageUrl;
+        } catch (error) {
+            clearTimeout(timeoutId);
+            throw error;
+        }
+    };
+
     const handleGenerateAI = async () => {
         setError(null);
         if (!formData.title) {
@@ -107,44 +133,26 @@ export function GeneratorForm() {
                 `Masterpiece, best quality, high resolution. ${styleKeywords}. A premium POAP commemorative badge design. Title text must read: "${formData.title}"${dateText}${keywordsText}. Circular badge format, professional composition, highly detailed, 1024x1024, perfect for NFT.`
             );
 
-            const randomSeed = Math.floor(Math.random() * 1000000);
-            const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?model=flux&width=1024&height=1024&nologo=true&enhance=true&seed=${randomSeed}`;
-
-            console.log('Generating image with URL:', imageUrl);
-
-            // Use fetch with timeout to check if image is accessible
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+            let imageUrl: string;
 
             try {
-                const response = await fetch(imageUrl, {
-                    signal: controller.signal,
-                    mode: 'cors'
-                });
-                clearTimeout(timeoutId);
-
-                if (!response.ok) {
-                    throw new Error(`Image generation failed: ${response.status}`);
-                }
-
-                // Image is accessible, set it
-                setFormData(prev => ({
-                    ...prev,
-                    imageUrl: imageUrl
-                }));
-
-            } catch (fetchError: any) {
-                clearTimeout(timeoutId);
-                if (fetchError.name === 'AbortError') {
-                    throw new Error('Image generation timed out. Please try again.');
-                }
-                throw fetchError;
+                // Try primary model (flux)
+                imageUrl = await generateImage(encodedPrompt, 'flux');
+            } catch (fluxError) {
+                console.warn('Flux model failed, switching to Turbo...', fluxError);
+                // Fallback to turbo model
+                imageUrl = await generateImage(encodedPrompt, 'turbo');
             }
+
+            setFormData(prev => ({
+                ...prev,
+                imageUrl: imageUrl
+            }));
 
         } catch (error: any) {
             console.error('Generation error:', error);
             const errorMessage = error.message?.includes('500')
-                ? 'AI service temporarily unavailable. Please try again in a moment.'
+                ? 'All AI models are currently busy. Please try again in a moment.'
                 : error.message || "Failed to generate image. Please try again.";
             setError(errorMessage);
         } finally {
