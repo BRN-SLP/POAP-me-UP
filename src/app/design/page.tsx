@@ -152,10 +152,10 @@ export default function DesignSystem() {
             <section className="space-y-8">
                 <h2 className="text-3xl font-bold border-b border-white/10 pb-4">Brand Highlighter</h2>
                 <div className="text-2xl font-light">
-                    This is a <BrandHighlighter>Base</BrandHighlighter> highlight. <br />
-                    This is an <BrandHighlighter>Optimism</BrandHighlighter> highlight. <br />
-                    This is a <BrandHighlighter>Celo</BrandHighlighter> highlight. <br />
-                    This is a <BrandHighlighter>Superchain</BrandHighlighter> highlight.
+                    <BrandHighlighter text="This is a Base highlight." /> <br />
+                    <BrandHighlighter text="This is an Optimism highlight." /> <br />
+                    <BrandHighlighter text="This is a Celo highlight." /> <br />
+                    <BrandHighlighter text="This is a Superchain highlight." />
                 </div>
             </section>
         </div>
