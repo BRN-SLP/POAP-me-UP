@@ -16,39 +16,53 @@ export async function POST(request: Request) {
         const randomSeed = Math.floor(Math.random() * 1000000);
         const fullPrompt = `${prompt}. Circular badge format, professional composition, highly detailed, 1024x1024, perfect for NFT, masterpiece quality`;
         const encodedPrompt = encodeURIComponent(fullPrompt);
+        const baseParams = `width=1024&height=1024&nologo=true&seed=${randomSeed}`;
 
-        // Strategy 1: Pollinations.ai (fastest, most reliable)
-        const pollinationsUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&nologo=true&seed=${randomSeed}`;
+        // Multi-tier strategy for best text quality
+        const models = [
+            { name: 'flux-pro', timeout: 20000 },  // Best quality, slower
+            { name: 'flux', timeout: 15000 },      // Good quality, faster
+            { name: 'default', timeout: 10000 }    // Fallback, fastest
+        ];
 
-        console.log("[API] Trying Pollinations...");
+        // Try each model in sequence
+        for (const model of models) {
+            const modelParam = model.name !== 'default' ? `&model=${model.name}` : '';
+            const url = `https://image.pollinations.ai/prompt/${encodedPrompt}?${baseParams}${modelParam}`;
 
-        try {
-            // Try to fetch with 10 second timeout
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 10000);
+            console.log(`[API] Trying ${model.name}...`);
 
-            const pollinationsResponse = await fetch(pollinationsUrl, {
-                method: 'GET',
-                signal: controller.signal
-            });
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), model.timeout);
 
-            clearTimeout(timeoutId);
+                const response = await fetch(url, {
+                    method: 'GET',
+                    signal: controller.signal
+                });
 
-            if (pollinationsResponse.ok) {
-                console.log("[API] Pollinations SUCCESS");
-                // Return the URL directly - browser will load it
-                return NextResponse.json({ imageUrl: pollinationsUrl });
+                clearTimeout(timeoutId);
+
+                if (response.ok) {
+                    console.log(`[API] ${model.name} SUCCESS`);
+                    return NextResponse.json({
+                        imageUrl: url,
+                        model: model.name
+                    });
+                }
+
+                console.warn(`[API] ${model.name} returned status:`, response.status);
+            } catch (error: any) {
+                console.warn(`[API] ${model.name} failed:`, error.message);
+                // Continue to next model
             }
-
-            console.warn("[API] Pollinations returned non-OK status:", pollinationsResponse.status);
-        } catch (pollinationsError: any) {
-            console.warn("[API] Pollinations failed:", pollinationsError.message);
         }
 
-        // Strategy 2: Return placeholder immediately (no Hugging Face - too slow/unreliable)
-        console.log("[API] Returning placeholder");
+        // All models failed - return placeholder
+        console.log("[API] All models failed, returning placeholder");
         return NextResponse.json({
-            imageUrl: `https://placehold.co/1024x1024/0a0a0a/0052FF/png?text=POAP+Preview&font=outfit`
+            imageUrl: `https://placehold.co/1024x1024/0a0a0a/0052FF/png?text=POAP+Preview&font=outfit`,
+            model: 'placeholder'
         });
 
     } catch (error: any) {
@@ -56,7 +70,8 @@ export async function POST(request: Request) {
 
         // Final fallback
         return NextResponse.json({
-            imageUrl: `https://placehold.co/1024x1024/0a0a0a/0052FF/png?text=Error&font=outfit`
+            imageUrl: `https://placehold.co/1024x1024/0a0a0a/0052FF/png?text=Error&font=outfit`,
+            model: 'error'
         });
     }
 }
