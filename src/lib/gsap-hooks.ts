@@ -229,7 +229,7 @@ export function useCountUp(target: number, duration = 2, suffix = "") {
         const element = ref.current;
         const obj = { value: 0 };
 
-        gsap.to(obj, {
+        const animation = gsap.to(obj, {
             value: target,
             duration,
             ease: "power2.out",
@@ -246,7 +246,8 @@ export function useCountUp(target: number, duration = 2, suffix = "") {
         });
 
         return () => {
-            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+            animation.scrollTrigger?.kill();
+            animation.kill();
         };
     }, [target, duration, suffix]);
 
@@ -263,31 +264,30 @@ export function useStagger(delay = 0.1, stagger = 0.1) {
         if (!ref.current) return;
 
         const children = ref.current.children;
-
-        gsap.fromTo(
-            children,
-            {
-                opacity: 0,
-                y: 30,
-            },
-            {
-                opacity: 1,
-                y: 0,
-                duration: 0.8,
-                delay,
-                stagger,
-                ease: "power3.out",
-                scrollTrigger: {
-                    trigger: ref.current,
-                    start: "top 80%",
-                    toggleActions: "play none none reverse",
+        const ctx = gsap.context(() => {
+            gsap.fromTo(
+                children,
+                {
+                    opacity: 0,
+                    y: 30,
                 },
-            }
-        );
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    delay,
+                    stagger,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: ref.current,
+                        start: "top 80%",
+                        toggleActions: "play none none reverse",
+                    },
+                }
+            );
+        }, ref);
 
-        return () => {
-            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-        };
+        return () => ctx.revert();
     }, [delay, stagger]);
 
     return ref;
@@ -304,7 +304,7 @@ export function useParallax(speed = 0.5) {
 
         const element = ref.current;
 
-        gsap.to(element, {
+        const animation = gsap.to(element, {
             y: () => window.innerHeight * speed,
             ease: "none",
             scrollTrigger: {
@@ -316,7 +316,8 @@ export function useParallax(speed = 0.5) {
         });
 
         return () => {
-            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+            animation.scrollTrigger?.kill();
+            animation.kill();
         };
     }, [speed]);
 
@@ -339,7 +340,7 @@ export function useDrawSVG(duration = 2, delay = 0) {
         path.style.strokeDasharray = `${length}`;
         path.style.strokeDashoffset = `${length}`;
 
-        gsap.to(path, {
+        const animation = gsap.to(path, {
             strokeDashoffset: 0,
             duration,
             delay,
@@ -352,7 +353,8 @@ export function useDrawSVG(duration = 2, delay = 0) {
         });
 
         return () => {
-            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+            animation.scrollTrigger?.kill();
+            animation.kill();
         };
     }, [duration, delay]);
 
@@ -370,7 +372,7 @@ export function useScrollProgress() {
 
         const element = ref.current;
 
-        gsap.to(element, {
+        const animation = gsap.to(element, {
             scaleX: 1,
             ease: "none",
             scrollTrigger: {
@@ -382,7 +384,8 @@ export function useScrollProgress() {
         });
 
         return () => {
-            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+            animation.scrollTrigger?.kill();
+            animation.kill();
         };
     }, []);
 
