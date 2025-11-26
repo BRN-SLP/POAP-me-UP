@@ -10,6 +10,8 @@ import { POAPExplainer } from "@/components/ui/POAPExplainer";
 import { SuperchainEcosystem } from "@/components/ui/SuperchainEcosystem";
 import { ProcessTimeline } from "@/components/ui/ProcessTimeline";
 
+import { GradientText, HighlightText } from "@/components/ui/TextHighlight";
+
 export default function Home() {
     const containerRef = useRef<HTMLDivElement>(null);
     const heroRef = useFadeIn(0);
@@ -35,11 +37,11 @@ export default function Home() {
 
                 <div className="relative z-10 max-w-5xl mx-auto space-y-10">
                     <h1 ref={heroRef} className="text-7xl md:text-9xl font-heading font-bold tracking-tighter text-white leading-[0.9]">
-                        POAP me <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0052FF] via-[#FF0420] to-[#FCFF52]">UP</span>
+                        POAP me <GradientText>UP</GradientText>
                     </h1>
 
                     <p ref={subtitleRef} className="text-xl md:text-3xl text-white/60 max-w-3xl mx-auto leading-relaxed font-light">
-                        Generate and mint exclusive POAPs on the <span className="text-gradient-optimism font-bold">Superchain</span>.
+                        <HighlightText>Generate and mint exclusive POAPs</HighlightText> on the <GradientText className="font-bold">Superchain</GradientText>.
                         Support for <span className="text-[#0052FF] font-bold">Base</span>, <span className="text-[#FF0420] font-bold">Optimism</span>, and <span className="text-[#FCFF52] font-bold">Celo</span>.
                     </p>
 

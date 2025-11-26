@@ -2,6 +2,7 @@
 
 import { useStagger } from "@/lib/gsap-hooks";
 import { Sparkles, Shield, Zap } from "lucide-react";
+import { HighlightText } from "@/components/ui/TextHighlight";
 
 export function POAPExplainer() {
     const cardsRef = useStagger(0.2, 0.15);
@@ -46,7 +47,7 @@ export function POAPExplainer() {
                         </div>
                     </div>
                     <h3 className="text-2xl font-heading font-bold mb-4 text-white">
-                        {card.title}
+                        <HighlightText>{card.title}</HighlightText>
                     </h3>
                     <p className="text-white/70 leading-relaxed">
                         {card.description}
