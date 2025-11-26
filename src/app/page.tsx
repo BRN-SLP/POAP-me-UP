@@ -1,11 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Zap, Layers, Coins } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { BrandHighlighter } from "@/components/ui/BrandHighlighter";
 import { useFadeIn, useFloating, useHeroScroll } from "@/lib/gsap-hooks";
 import { useRef } from "react";
+import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
+import { POAPExplainer } from "@/components/ui/POAPExplainer";
+import { SuperchainEcosystem } from "@/components/ui/SuperchainEcosystem";
+import { ProcessTimeline } from "@/components/ui/ProcessTimeline";
 
 export default function Home() {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -56,65 +59,78 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* Features Section */}
-            <section className="py-32 px-4 relative z-10">
+            {/* Stats Section */}
+            <section className="py-20 px-4 relative z-10 border-y border-white/5 bg-black/20 backdrop-blur-sm">
                 <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <FeatureCard
-                        icon={<Zap className="h-10 w-10 text-celo" />}
-                        title="Instant Generation"
-                        description="Create stunning artwork in seconds using our advanced AI models."
-                        glowColor="group-hover:shadow-[0_0_40px_-10px_rgba(252,255,82,0.3)]"
-                        borderColor="group-hover:border-celo/30"
-                        delay={0}
+                    <AnimatedCounter
+                        target={6}
+                        label="Superchain Networks"
+                        description="Expanding ecosystem support"
                     />
-                    <FeatureCard
-                        icon={<Layers className="h-10 w-10 text-optimism" />}
-                        title="Multi-Chain Support"
-                        description="Seamlessly mint on Base, Optimism, and Celo with a single click."
-                        glowColor="group-hover:shadow-[0_0_40px_-10px_rgba(255,4,32,0.3)]"
-                        borderColor="group-hover:border-optimism/30"
-                        delay={0.1}
+                    <AnimatedCounter
+                        target={15000}
+                        suffix="+"
+                        label="POAPs Minted"
+                        description="Memories preserved on-chain"
                     />
-                    <FeatureCard
-                        icon={<Coins className="h-10 w-10 text-base" />}
-                        title="Low Fees"
-                        description="Experience the speed and efficiency of the Superchain ecosystem."
-                        glowColor="group-hover:shadow-[0_0_40px_-10px_rgba(0,82,255,0.3)]"
-                        borderColor="group-hover:border-base/30"
-                        delay={0.2}
+                    <AnimatedCounter
+                        target={0}
+                        prefix="$"
+                        label="Minting Fee"
+                        description="Free minting on testnets"
                     />
                 </div>
             </section>
-        </div>
-    );
-}
 
-function FeatureCard({
-    icon,
-    title,
-    description,
-    glowColor,
-    borderColor,
-    delay
-}: {
-    icon: React.ReactNode,
-    title: string,
-    description: string,
-    glowColor: string,
-    borderColor: string,
-    delay: number
-}) {
-    const cardRef = useFadeIn(delay);
+            {/* What is POAP Section */}
+            <section className="py-32 px-4 relative z-10">
+                <div className="max-w-7xl mx-auto space-y-16">
+                    <div className="text-center space-y-4">
+                        <h2 className="text-4xl md:text-5xl font-heading font-bold text-white">
+                            Preserve Your Memories
+                        </h2>
+                        <p className="text-xl text-white/60 max-w-2xl mx-auto">
+                            Turn moments into digital collectibles that last forever
+                        </p>
+                    </div>
+                    <POAPExplainer />
+                </div>
+            </section>
 
-    return (
-        <div ref={cardRef} className={`glass-panel p-10 rounded-[2rem] hover:bg-white/[0.08] transition-all duration-500 group border border-white/5 ${borderColor} ${glowColor}`}>
-            <div className="mb-8 p-5 rounded-2xl bg-white/5 w-fit group-hover:scale-110 transition-transform duration-500 border border-white/5">
-                {icon}
-            </div>
-            <h3 className="text-3xl font-heading font-bold mb-4 text-white">{title}</h3>
-            <p className="text-lg text-white/60 leading-relaxed">
-                {description}
-            </p>
+            {/* Ecosystem Section */}
+            <section className="py-32 px-4 relative z-10 bg-gradient-to-b from-transparent via-white/5 to-transparent">
+                <div className="max-w-7xl mx-auto">
+                    <SuperchainEcosystem />
+                </div>
+            </section>
+
+            {/* How It Works Section */}
+            <section className="py-32 px-4 relative z-10">
+                <div className="max-w-7xl mx-auto">
+                    <ProcessTimeline />
+                </div>
+            </section>
+
+            {/* CTA Section */}
+            <section className="py-32 px-4 relative z-10 text-center">
+                <div className="max-w-4xl mx-auto glass-panel p-16 rounded-[3rem] border border-white/10 relative overflow-hidden group">
+                    <div className="absolute inset-0 bg-gradient-to-r from-base/20 via-optimism/20 to-celo/20 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+
+                    <div className="relative z-10 space-y-8">
+                        <h2 className="text-5xl md:text-7xl font-heading font-bold text-white">
+                            Ready to Mint?
+                        </h2>
+                        <p className="text-xl text-white/60 max-w-2xl mx-auto">
+                            Join thousands of creators preserving memories on the Superchain.
+                        </p>
+                        <Link href="/generator">
+                            <Button size="lg" className="h-20 px-12 text-2xl rounded-full bg-white text-black hover:bg-white/90 hover:scale-105 transition-all shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]">
+                                Create Your First POAP
+                            </Button>
+                        </Link>
+                    </div>
+                </div>
+            </section>
         </div>
     );
 }

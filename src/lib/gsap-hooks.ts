@@ -216,3 +216,175 @@ export function useHeroScroll(
         };
     }, [heroRef, titleRef, blobsRef]);
 }
+
+/**
+ * Hook for animated count-up effect
+ */
+export function useCountUp(target: number, duration = 2, suffix = "") {
+    const ref = useRef<HTMLSpanElement>(null);
+
+    useEffect(() => {
+        if (!ref.current) return;
+
+        const element = ref.current;
+        const obj = { value: 0 };
+
+        gsap.to(obj, {
+            value: target,
+            duration,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: element,
+                start: "top 80%",
+                toggleActions: "play none none reset",
+            },
+            onUpdate: () => {
+                if (element) {
+                    element.textContent = Math.floor(obj.value) + suffix;
+                }
+            },
+        });
+
+        return () => {
+            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+        };
+    }, [target, duration, suffix]);
+
+    return ref;
+}
+
+/**
+ * Hook for staggered animations
+ */
+export function useStagger(delay = 0.1, stagger = 0.1) {
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!ref.current) return;
+
+        const children = ref.current.children;
+
+        gsap.fromTo(
+            children,
+            {
+                opacity: 0,
+                y: 30,
+            },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                delay,
+                stagger,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: ref.current,
+                    start: "top 80%",
+                    toggleActions: "play none none reverse",
+                },
+            }
+        );
+
+        return () => {
+            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+        };
+    }, [delay, stagger]);
+
+    return ref;
+}
+
+/**
+ * Hook for parallax scroll effect
+ */
+export function useParallax(speed = 0.5) {
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!ref.current) return;
+
+        const element = ref.current;
+
+        gsap.to(element, {
+            y: () => window.innerHeight * speed,
+            ease: "none",
+            scrollTrigger: {
+                trigger: element,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true,
+            },
+        });
+
+        return () => {
+            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+        };
+    }, [speed]);
+
+    return ref;
+}
+
+/**
+ * Hook for SVG path drawing animation
+ */
+export function useDrawSVG(duration = 2, delay = 0) {
+    const ref = useRef<SVGPathElement>(null);
+
+    useEffect(() => {
+        if (!ref.current) return;
+
+        const path = ref.current;
+        const length = path.getTotalLength();
+
+        // Set up the starting positions
+        path.style.strokeDasharray = `${length}`;
+        path.style.strokeDashoffset = `${length}`;
+
+        gsap.to(path, {
+            strokeDashoffset: 0,
+            duration,
+            delay,
+            ease: "power2.inOut",
+            scrollTrigger: {
+                trigger: path,
+                start: "top 80%",
+                toggleActions: "play none none reset",
+            },
+        });
+
+        return () => {
+            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+        };
+    }, [duration, delay]);
+
+    return ref;
+}
+
+/**
+ * Hook for scroll progress indicator
+ */
+export function useScrollProgress() {
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!ref.current) return;
+
+        const element = ref.current;
+
+        gsap.to(element, {
+            scaleX: 1,
+            ease: "none",
+            scrollTrigger: {
+                trigger: document.body,
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 0.3,
+            },
+        });
+
+        return () => {
+            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+        };
+    }, []);
+
+    return ref;
+}
