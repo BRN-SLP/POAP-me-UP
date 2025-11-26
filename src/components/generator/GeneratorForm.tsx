@@ -66,7 +66,7 @@ export function GeneratorForm() {
 
     // Style-specific prompt templates
     const stylePrompts = {
-        sketch: "Vintage commemorative badge with ornate borders, traditional heraldic style, elegant serif typography, gold and navy accents, embossed details, formal and prestigious design",
+        sketch: "Hand-drawn sketch style badge, pencil or ink drawing aesthetic, artistic linework, hatching and cross-hatching shading, organic imperfect lines, artistic doodle elements, creative hand-lettered typography, sketch book illustration style, artistic and expressive design",
         modern: "Contemporary sleek badge design, vibrant gradient backgrounds, clean sans-serif typography, geometric shapes, bold colors, minimalist composition, tech-forward aesthetic",
         flat: "Flat design combined with minimalistic aesthetic, simple geometric shapes, limited color palette, clean vector art, no shadows or gradients, modern sans-serif fonts, Scandinavian design influence",
         pixel: "8-bit pixel art badge, retro gaming aesthetic, pixelated typography, limited color palette like NES or Game Boy, sprite-based design, nostalgic 80s-90s video game style, pixel perfect details, blocky graphics",
