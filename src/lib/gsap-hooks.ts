@@ -20,7 +20,7 @@ export function useFadeIn(delay = 0) {
 
         const element = ref.current;
 
-        gsap.fromTo(
+        const animation = gsap.fromTo(
             element,
             {
                 opacity: 0,
@@ -41,7 +41,8 @@ export function useFadeIn(delay = 0) {
         );
 
         return () => {
-            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+            animation.scrollTrigger?.kill();
+            animation.kill();
         };
     }, [delay]);
 
@@ -232,12 +233,8 @@ export function useCountUp(target: number, duration = 2, suffix = "") {
         const animation = gsap.to(obj, {
             value: target,
             duration,
+            delay: 0.5,
             ease: "power2.out",
-            scrollTrigger: {
-                trigger: element,
-                start: "top 80%",
-                toggleActions: "play none none reset",
-            },
             onUpdate: () => {
                 if (element) {
                     element.textContent = Math.floor(obj.value) + suffix;
@@ -246,7 +243,6 @@ export function useCountUp(target: number, duration = 2, suffix = "") {
         });
 
         return () => {
-            animation.scrollTrigger?.kill();
             animation.kill();
         };
     }, [target, duration, suffix]);
