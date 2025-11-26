@@ -8,7 +8,7 @@ interface LivePreviewProps {
     title: string;
     date: string;
     network: "base" | "celo" | "optimism";
-    theme: "classic" | "modern" | "flat" | "pixel" | "monochrome" | "abstract";
+    theme: "sketch" | "modern" | "flat" | "pixel" | "monochrome" | "abstract";
     keywords: string;
     imageUrl?: string;
 }

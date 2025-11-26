@@ -41,7 +41,7 @@ export function GeneratorForm() {
         title: string;
         date: string;
         network: "base" | "celo" | "optimism";
-        theme: "classic" | "modern" | "flat" | "pixel" | "monochrome" | "abstract";
+        theme: "sketch" | "modern" | "flat" | "pixel" | "monochrome" | "abstract";
         keywords: string;
         imageUrl?: string;
     }>({
@@ -66,7 +66,7 @@ export function GeneratorForm() {
 
     // Style-specific prompt templates
     const stylePrompts = {
-        classic: "Vintage commemorative badge with ornate borders, traditional heraldic style, elegant serif typography, gold and navy accents, embossed details, formal and prestigious design",
+        sketch: "Vintage commemorative badge with ornate borders, traditional heraldic style, elegant serif typography, gold and navy accents, embossed details, formal and prestigious design",
         modern: "Contemporary sleek badge design, vibrant gradient backgrounds, clean sans-serif typography, geometric shapes, bold colors, minimalist composition, tech-forward aesthetic",
         flat: "Flat design combined with minimalistic aesthetic, simple geometric shapes, limited color palette, clean vector art, no shadows or gradients, modern sans-serif fonts, Scandinavian design influence",
         pixel: "8-bit pixel art badge, retro gaming aesthetic, pixelated typography, limited color palette like NES or Game Boy, sprite-based design, nostalgic 80s-90s video game style, pixel perfect details, blocky graphics",
@@ -244,9 +244,9 @@ export function GeneratorForm() {
                         </div>
 
                         <div className="space-y-3">
-                            <label className="text-sm font-medium text-white/70 uppercase tracking-wider">Theme Style</label>
+                            <label className="text-sm font-medium text-white/70 uppercase tracking-wider">POAP Style</label>
                             <div className="grid grid-cols-3 gap-2">
-                                {(["classic", "modern", "flat", "pixel", "monochrome", "abstract"] as const).map((theme) => (
+                                {(["sketch", "modern", "flat", "pixel", "monochrome", "abstract"] as const).map((theme) => (
                                     <Button
                                         key={theme}
                                         variant={formData.theme === theme ? "default" : "ghost"}
