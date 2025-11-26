@@ -133,4 +133,22 @@ body::after {
   .btn-glow-celo {
     box-shadow: 0 0 20px rgba(252, 255, 82, 0.3), 0 0 40px rgba(252, 255, 82, 0.1);
   }
+
+  /* Gradient Animation */
+  @keyframes gradient-x {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .animate-gradient {
+    animation: gradient-x 3s ease infinite;
+    background-size: 200% auto;
+  }
 }
