@@ -41,7 +41,7 @@ export default function Home() {
                     </h1>
 
                     <p ref={subtitleRef} className="text-xl md:text-3xl text-white/60 max-w-3xl mx-auto leading-relaxed font-light">
-                        <HighlightText>Generate and mint exclusive POAPs</HighlightText> on the <GradientText className="font-bold">Superchain</GradientText>.
+                        Generate and mint exclusive POAPs on the <GradientText className="font-bold">Superchain</GradientText>.
                         Support for <span className="text-[#0052FF] font-bold">Base</span>, <span className="text-[#FF0420] font-bold">Optimism</span>, and <span className="text-[#FCFF52] font-bold">Celo</span>.
                     </p>
 

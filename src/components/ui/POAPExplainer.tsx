@@ -47,7 +47,7 @@ export function POAPExplainer() {
                         </div>
                     </div>
                     <h3 className="text-2xl font-heading font-bold mb-4 text-white">
-                        <HighlightText>{card.title}</HighlightText>
+                        {card.title}
                     </h3>
                     <p className="text-white/70 leading-relaxed">
                         {card.description}

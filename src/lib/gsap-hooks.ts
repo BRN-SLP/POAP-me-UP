@@ -35,7 +35,7 @@ export function useFadeIn(delay = 0) {
                 scrollTrigger: {
                     trigger: element,
                     start: "top 80%",
-                    toggleActions: "play none none reverse",
+                    toggleActions: "play none none none",
                 },
             }
         );

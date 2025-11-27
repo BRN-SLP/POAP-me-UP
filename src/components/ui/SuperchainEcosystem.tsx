@@ -1,6 +1,5 @@
-"use client";
-
 import { useFadeIn } from "@/lib/gsap-hooks";
+import { Circle, Zap, CircleDot, Disc, Layers, Box } from "lucide-react";
 
 export function SuperchainEcosystem() {
     const containerRef = useFadeIn(0.3);
@@ -10,7 +9,7 @@ export function SuperchainEcosystem() {
             name: "Base",
             color: "#0052FF",
             description: "Built by Coinbase, Base is a secure, low-cost Ethereum L2",
-            logo: "🔵",
+            logo: <Circle className="w-16 h-16" strokeWidth={1.5} />,
             status: "active",
             stats: { tps: "~1000", fee: "$0.01" }
         },
@@ -18,7 +17,7 @@ export function SuperchainEcosystem() {
             name: "Optimism",
             color: "#FF0420",
             description: "The original Optimistic Rollup, scaling Ethereum sustainably",
-            logo: "🔴",
+            logo: <Zap className="w-16 h-16" strokeWidth={1.5} />,
             status: "active",
             stats: { tps: "~2000", fee: "$0.02" }
         },
@@ -26,7 +25,7 @@ export function SuperchainEcosystem() {
             name: "Celo",
             color: "#FCFF52",
             description: "Mobile-first blockchain for real-world payments",
-            logo: "🟡",
+            logo: <CircleDot className="w-16 h-16" strokeWidth={1.5} />,
             status: "active",
             stats: { tps: "~1000", fee: "$0.001" }
         },
@@ -34,7 +33,7 @@ export function SuperchainEcosystem() {
             name: "Zora",
             color: "#111111",
             description: "The best place to mint and collect NFTs",
-            logo: "⚫",
+            logo: <Disc className="w-16 h-16" strokeWidth={1.5} />,
             status: "soon",
             stats: { tps: "Coming", fee: "Soon" }
         },
@@ -42,7 +41,7 @@ export function SuperchainEcosystem() {
             name: "Mode",
             color: "#DFFE00",
             description: "The Modular DeFi L2 rewarding growth",
-            logo: "🟢",
+            logo: <Layers className="w-16 h-16" strokeWidth={1.5} />,
             status: "soon",
             stats: { tps: "Coming", fee: "Soon" }
         },
@@ -50,7 +49,7 @@ export function SuperchainEcosystem() {
             name: "Fraxtal",
             color: "#000000",
             description: "Modular rollup with fractal scaling",
-            logo: "⚪",
+            logo: <Box className="w-16 h-16" strokeWidth={1.5} />,
             status: "soon",
             stats: { tps: "Coming", fee: "Soon" }
         }
@@ -90,7 +89,7 @@ export function SuperchainEcosystem() {
                         <div className="relative z-10 space-y-6">
                             <div className="flex justify-between items-start">
                                 {/* Logo */}
-                                <div className="text-6xl group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">
+                                <div className="text-white/80 group-hover:text-white group-hover:scale-110 transition-all duration-500">
                                     {network.logo}
                                 </div>
 
@@ -130,26 +129,13 @@ export function SuperchainEcosystem() {
                 ))}
             </div>
 
-            {/* Connection visualization */}
-            <div className="relative h-32 flex items-center justify-center">
-                <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 0 }}>
-                    <defs>
-                        <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stopColor="#0052FF" stopOpacity="0.3" />
-                            <stop offset="50%" stopColor="#FF0420" stopOpacity="0.3" />
-                            <stop offset="100%" stopColor="#FCFF52" stopOpacity="0.3" />
-                        </linearGradient>
-                    </defs>
-                    <path
-                        d="M 10 50 Q 50% 10, 90% 50"
-                        stroke="url(#connectionGradient)"
-                        strokeWidth="2"
-                        fill="none"
-                        className="animate-pulse"
-                    />
-                </svg>
-                <div className="relative z-10 glass-panel px-6 py-3 rounded-full border border-white/20">
-                    <span className="text-white/80 font-medium">Seamlessly Connected</span>
+            {/* Connection visualization - Simplified */}
+            <div className="relative py-12 flex items-center justify-center">
+                <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-white/10"></div>
+                </div>
+                <div className="relative z-10 bg-[#050505] px-6">
+                    <span className="text-white/40 font-medium uppercase tracking-widest text-sm">Seamlessly Connected</span>
                 </div>
             </div>
         </div>
