@@ -139,16 +139,52 @@ body::after {
     0% {
       background-position: 0% 50%;
     }
+
     50% {
       background-position: 100% 50%;
     }
+
     100% {
       background-position: 0% 50%;
     }
   }
 
-  .animate-gradient {
-    animation: gradient-x 3s ease infinite;
-    background-size: 200% auto;
+  .animate-gradient-text {
+    background: linear-gradient(to right, #0052FF, #FF0420, #FCFF52, #0052FF);
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: gradient-x 4s linear infinite;
+  }
+
+  /* Highlight Animation */
+  .highlight-text-container {
+    position: relative;
+    display: inline-block;
+    z-index: 0;
+  }
+
+  .highlight-text-bg {
+    content: "";
+    position: absolute;
+    bottom: 2px;
+    left: -2px;
+    right: -2px;
+    height: 30%;
+    background-color: rgba(255, 4, 32, 0.3);
+    z-index: -1;
+    transform-origin: left;
+    transform: scaleX(0);
+    animation: highlight-reveal 1s ease-out forwards;
+    animation-delay: 0.5s;
+    border-radius: 2px;
+  }
+
+  @keyframes highlight-reveal {
+    to {
+      transform: scaleX(1);
+    }
   }
 }
