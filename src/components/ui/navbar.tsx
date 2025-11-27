@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
 import { Wallet } from "lucide-react";
+import { Logo } from "@/components/ui/Logo";
 
 export function Navbar() {
     const { open } = useAppKit();
@@ -16,16 +17,8 @@ export function Navbar() {
         <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/80 backdrop-blur-xl">
             <div className="container mx-auto px-6 h-16 flex items-center justify-between">
                 {/* Logo Area */}
-                <Link href="/" className="flex items-center gap-3 group">
-                    <div className="relative">
-                        <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-base via-optimism to-celo opacity-70 blur group-hover:opacity-100 transition-opacity duration-500" />
-                        <div className="relative h-10 w-10 rounded-full bg-black border border-white/10 flex items-center justify-center overflow-hidden">
-                            <div className="absolute inset-0 bg-gradient-to-br from-base/20 via-optimism/20 to-celo/20" />
-                        </div>
-                    </div>
-                    <span className="font-heading font-bold text-2xl tracking-tight text-white">
-                        POAP me <span className="text-gradient-base">UP</span>
-                    </span>
+                <Link href="/" className="group">
+                    <Logo />
                 </Link>
 
                 {/* Right Side: Navigation & Connect */}
