@@ -25,43 +25,33 @@ export function Logo({ className, showText = true }: LogoProps) {
                     <defs>
                         <linearGradient id="logoGradient" x1="0" y1="40" x2="40" y2="0" gradientUnits="userSpaceOnUse">
                             <stop offset="0%" stopColor="#0052FF" />
-                            <stop offset="25%" stopColor="#7744DD" />
-                            <stop offset="50%" stopColor="#DD2255" />
-                            <stop offset="75%" stopColor="#FF7733" />
+                            <stop offset="25%" stopColor="#6644CC" />
+                            <stop offset="50%" stopColor="#CC3366" />
+                            <stop offset="70%" stopColor="#FF6633" />
                             <stop offset="100%" stopColor="#FCFF52" />
                         </linearGradient>
                     </defs>
 
-                    {/* AI-Traced Wave S Logo with Smooth Bottom-Left Corner */}
+                    {/* Refined Wave S - Solid shape with elegant rounded bottom-left */}
                     <path
-                        d="M 12 39
-                           C 6 39, 2 35, 2 28
-                           C 2 18, 12 12, 20 10
-                           C 26 8.5, 32 11, 35 16
-                           C 37 19, 37 24, 34 27
-                           C 31 30, 26 29, 23 26
-                           C 20 23, 22 19, 26 17
-                           C 28 16, 30 16.5, 31 17.5
-                           L 32 16
-                           C 30 13, 25 12, 20 13
-                           C 12 15, 6 22, 6 30
-                           C 6 34, 9 37, 14 37
-                           C 20 37, 26 34, 30 30
-                           C 35 25, 36 18, 32 12
-                           C 28 6, 20 6, 14 8
-                           C 8 10, 4 14, 4 14
-                           L 6 12
-                           C 8 10, 14 6, 22 4
-                           C 32 2, 40 10, 38 20
-                           C 37 28, 30 34, 22 36
-                           C 18 37, 15 39, 12 39
+                        d="M 4 28
+                           Q 4 38, 14 38
+                           Q 24 38, 30 32
+                           Q 36 26, 30 20
+                           Q 24 14, 30 8
+                           Q 36 2, 28 2
+                           Q 20 2, 14 8
+                           Q 8 14, 14 20
+                           Q 20 26, 14 32
+                           Q 10 35, 6 30
+                           Q 4 28, 4 28
                            Z"
                         fill="url(#logoGradient)"
                         className="group-hover:scale-105 transition-transform duration-300 origin-center"
                     />
 
-                    {/* Sparkle accent */}
-                    <circle cx="36" cy="8" r="2" fill="#FCFF52" opacity="0.9"
+                    {/* Wave crest sparkle */}
+                    <circle cx="32" cy="6" r="2" fill="#FCFF52" opacity="0.9"
                         className="group-hover:opacity-100 group-hover:scale-110 transition-all duration-300" />
                 </svg>
             </div>
