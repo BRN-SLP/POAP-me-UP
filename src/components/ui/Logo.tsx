@@ -23,40 +23,41 @@ export function Logo({ className, showText = true }: LogoProps) {
                     className="relative z-10"
                 >
                     <defs>
-                        <linearGradient id="logoGradient" x1="0" y1="40" x2="40" y2="0" gradientUnits="userSpaceOnUse">
+                        <linearGradient id="logoGradient" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
                             <stop offset="0%" stopColor="#0052FF" />
                             <stop offset="50%" stopColor="#FF0420" />
                             <stop offset="100%" stopColor="#FCFF52" />
                         </linearGradient>
                     </defs>
 
-                    {/* Wave/Surge Shape forming upward motion */}
+                    {/* S shaped wave - smooth curves forming letter S with wave motion */}
                     <path
-                        d="M5 25C8 22 12 20 16 22C20 24 24 20 28 18C32 16 36 18 36 18L36 35L5 35Z"
-                        fill="url(#logoGradient)"
-                        opacity="0.3"
-                        className="group-hover:opacity-40 transition-opacity duration-500"
-                    />
-
-                    {/* Main surge wave */}
-                    <path
-                        d="M5 20C10 15 15 12 20 15C25 18 30 12 35 10"
+                        d="M28 8 C32 8, 35 11, 35 15 C35 19, 32 22, 27 23 C22 24, 18 24, 13 23 C8 22, 5 19, 5 15 C5 13, 6 11, 8 10"
                         stroke="url(#logoGradient)"
                         strokeWidth="3"
                         strokeLinecap="round"
-                        strokeLinejoin="round"
                         fill="none"
-                        className="group-hover:-translate-y-1 transition-transform duration-300"
+                        className="group-hover:-translate-y-0.5 transition-transform duration-300"
                     />
 
-                    {/* Energy burst/arrow up */}
+                    {/* Lower S curve with wave */}
                     <path
-                        d="M20 15L20 5M20 5L16 9M20 5L24 9"
+                        d="M12 18 C8 18, 5 21, 5 25 C5 29, 8 32, 13 32 C18 32, 22 32, 27 31 C32 30, 35 27, 35 23 C35 21, 34 19, 32 18"
                         stroke="url(#logoGradient)"
-                        strokeWidth="2.5"
+                        strokeWidth="3"
                         strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="group-hover:-translate-y-2 transition-transform duration-300"
+                        fill="none"
+                        className="group-hover:translate-y-0.5 transition-transform duration-300"
+                    />
+
+                    {/* Wave crest accent - small energy burst at top */}
+                    <path
+                        d="M30 6 L32 4 M26 7 L27 5"
+                        stroke="url(#logoGradient)"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        opacity="0.6"
+                        className="group-hover:opacity-100 group-hover:-translate-y-1 transition-all duration-300"
                     />
                 </svg>
             </div>
