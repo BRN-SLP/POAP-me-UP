@@ -66,7 +66,7 @@ export function SuccessModal({
                     Your unique SURGE is ready to use
                 </p>
 
-                {/* POAP Preview */}
+                {/* SURGE Preview */}
                 <div className="mb-6 rounded-2xl overflow-hidden border border-white/10">
                     <img
                         src={poapImage}

@@ -11,8 +11,8 @@ export function Logo({ className, showText = true }: LogoProps) {
     return (
         <div className={cn("flex items-center gap-3", className)}>
             <div className="relative group">
-                {/* Glow effect */}
-                <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-base via-optimism to-celo opacity-50 blur group-hover:opacity-80 transition-opacity duration-500" />
+                {/* Glow effect - enhanced for dark backgrounds */}
+                <div className="absolute -inset-2 rounded-full bg-gradient-to-br from-base via-optimism to-celo opacity-70 blur-md group-hover:opacity-100 transition-opacity duration-500" />
 
                 <svg
                     width="40"

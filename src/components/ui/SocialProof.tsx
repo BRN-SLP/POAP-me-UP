@@ -6,8 +6,8 @@ export function SocialProof() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <AnimatedCounter
                     target={12450}
-                    label="POAPs Created"
-                    description="Unique memories preserved on-chain"
+                    label="SURGEs Created"
+                    description="Unique achievements amplified on-chain"
                     suffix="+"
                 />
                 <AnimatedCounter
