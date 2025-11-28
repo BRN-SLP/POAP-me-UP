@@ -49,7 +49,7 @@ export function SuccessModal({
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
-            <div className="glass-panel p-8 rounded-3xl border border-white/10 max-w-lg w-full animate-in zoom-in-95">
+            <div className="glass-panel p-8 rounded-3xl border border-white/10 max-w-lg w-full max-h-[90vh] overflow-y-auto animate-in zoom-in-95">
                 {/* Success Icon */}
                 <div className="flex justify-center mb-6">
                     <div className="relative">
@@ -60,10 +60,10 @@ export function SuccessModal({
 
                 {/* Title */}
                 <h2 className="text-3xl font-bold text-white text-center mb-2">
-                    POAP создан успешно!
+                    POAP Created Successfully!
                 </h2>
                 <p className="text-white/70 text-center mb-6">
-                    Ваш уникальный POAP готов к использованию
+                    Your unique POAP is ready to use
                 </p>
 
                 {/* POAP Preview */}
@@ -71,7 +71,7 @@ export function SuccessModal({
                     <img
                         src={poapImage}
                         alt={poapTitle}
-                        className="w-full h-auto"
+                        className="w-full h-auto max-h-[50vh] object-contain"
                     />
                 </div>
 
@@ -83,7 +83,7 @@ export function SuccessModal({
                         size="lg"
                     >
                         <Download className="w-4 h-4" />
-                        Скачать POAP
+                        Download POAP
                     </Button>
 
                     <div className="grid grid-cols-2 gap-3">
@@ -121,13 +121,13 @@ export function SuccessModal({
                         variant="outline"
                         className="flex-1"
                     >
-                        Создать еще
+                        Create Another
                     </Button>
                     <Button
                         onClick={onClose}
                         className="flex-1"
                     >
-                        Готово
+                        Done
                     </Button>
                 </div>
             </div>

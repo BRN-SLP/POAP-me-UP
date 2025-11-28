@@ -204,6 +204,24 @@ export function GeneratorForm() {
         validate('title', template.defaultData.title);
     };
 
+    // Handle export PNG
+    const handleExport = () => {
+        if (!formData.imageUrl) return;
+
+        const link = document.createElement('a');
+        link.href = formData.imageUrl;
+        link.download = `poap-${formData.title.replace(/\s+/g, '-').toLowerCase() || 'untitled'}-${Date.now()}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        trackEvent({
+            action: 'export_poap',
+            category: 'poap_generator',
+            label: formData.network
+        });
+    };
+
     const handleGenerateAI = async () => {
         console.log('[FRONTEND] Starting generation...');
         setError(null);
@@ -522,14 +540,6 @@ export function GeneratorForm() {
                     />
                 )}
 
-                {isGenerating && (
-                    <LoadingState
-                        variant="ai"
-                        message="Creating your POAP"
-                        submessage="This may take 10-30 seconds"
-                    />
-                )}
-
                 <div className="flex gap-4">
                     <Button
                         className="flex-1 h-14 text-lg font-bold bg-gradient-to-r from-base via-optimism to-celo hover:opacity-90 hover:scale-[1.02] text-white hover:text-black shadow-lg shadow-base/30 hover:shadow-xl hover:shadow-base/50 transition-all duration-200 rounded-xl relative overflow-hidden group"
@@ -563,13 +573,18 @@ export function GeneratorForm() {
                 <div className="relative group">
                     <div className="absolute -inset-1 bg-gradient-to-r from-base via-optimism to-celo rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
                     <div className="relative">
-                        <LivePreview {...formData} />
+                        <LivePreview {...formData} isGenerating={isGenerating} />
                     </div>
                 </div>
 
                 <div className="flex flex-col gap-4 w-full max-w-md">
                     <div className="flex gap-4 w-full">
-                        <Button variant="outline" className="flex-1 border-white/10 hover:bg-white/5 hover:text-white h-12">
+                        <Button
+                            variant="outline"
+                            className="flex-1 border-white/10 hover:bg-white/5 hover:text-white h-12"
+                            onClick={handleExport}
+                            disabled={!formData.imageUrl}
+                        >
                             <Download className="mr-2 h-4 w-4" /> Export PNG
                         </Button>
                         <Button

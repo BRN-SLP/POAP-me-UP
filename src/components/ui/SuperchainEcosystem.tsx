@@ -128,16 +128,6 @@ export function SuperchainEcosystem() {
                     </div>
                 ))}
             </div>
-
-            {/* Connection visualization - Simplified */}
-            <div className="relative py-12 flex items-center justify-center">
-                <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-white/10"></div>
-                </div>
-                <div className="relative z-10 bg-[#050505] px-6">
-                    <span className="text-white/40 font-medium uppercase tracking-widest text-sm">Seamlessly Connected</span>
-                </div>
-            </div>
         </div>
     );
 }

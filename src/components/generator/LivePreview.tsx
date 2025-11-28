@@ -3,6 +3,7 @@
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useReveal } from "@/lib/gsap-hooks";
+import { Sparkles, Circle, Zap, CircleDot } from "lucide-react";
 
 interface LivePreviewProps {
     title: string;
@@ -11,6 +12,7 @@ interface LivePreviewProps {
     theme: "sketch" | "modern" | "flat" | "pixel" | "monochrome" | "abstract";
     keywords: string;
     imageUrl?: string;
+    isGenerating?: boolean;
 }
 
 export function LivePreview({
@@ -19,20 +21,37 @@ export function LivePreview({
     network,
     theme,
     imageUrl,
+    isGenerating = false,
 }: LivePreviewProps) {
     const imageRevealRef = useReveal(0.6);
 
-    const getNetworkIcon = () => {
-        switch (network) {
-            case "base":
-                return "🔵";
-            case "celo":
-                return "🟡";
-            case "optimism":
-                return "🔴";
-            default:
-                return "⚪";
-        }
+    const NetworkLogo = () => {
+        const logoConfig = {
+            base: {
+                Icon: Circle,
+                gradient: "from-[#0052FF] to-[#3374FF]",
+                color: "#0052FF"
+            },
+            optimism: {
+                Icon: Zap,
+                gradient: "from-[#FF0420] to-[#FF334B]",
+                color: "#FF0420"
+            },
+            celo: {
+                Icon: CircleDot,
+                gradient: "from-[#FCFF52] to-[#FEFF85]",
+                color: "#FCFF52"
+            }
+        };
+
+        const config = logoConfig[network];
+        const Icon = config.Icon;
+
+        return (
+            <div className={`bg-gradient-to-br ${config.gradient} p-4 rounded-full shadow-2xl`}>
+                <Icon className="w-8 h-8 text-white" strokeWidth={2.5} />
+            </div>
+        );
     };
 
     return (
@@ -40,8 +59,24 @@ export function LivePreview({
             "w-full max-w-md aspect-square flex items-center justify-center bg-muted/20 backdrop-blur-sm overflow-hidden relative",
             imageUrl ? "p-4" : "p-8"
         )}>
-            {imageUrl ? (
-                // AI Generated Image - ensure proper display without cropping
+            {isGenerating ? (
+                // Loading State - inline in preview
+                <div className="w-full h-full flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm rounded-2xl">
+                    <Sparkles className="w-16 h-16 text-blue-400 mb-6 animate-pulse" />
+                    <h3 className="text-2xl font-bold text-white mb-2">
+                        Creating your POAP
+                    </h3>
+                    <p className="text-white/60 text-center px-4 mb-6">
+                        This may take 10-30 seconds
+                    </p>
+                    <div className="flex gap-2">
+                        <div className="w-3 h-3 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <div className="w-3 h-3 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <div className="w-3 h-3 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                    </div>
+                </div>
+            ) : imageUrl ? (
+                // AI Generated Image
                 <div ref={imageRevealRef} className="w-full h-full flex items-center justify-center">
                     <img
                         src={imageUrl}
@@ -58,14 +93,14 @@ export function LivePreview({
                     />
                 </div>
             ) : (
-                // Placeholder preview
+                // Placeholder preview with Network Logo
                 <div
                     className="w-full h-full rounded-full flex flex-col items-center justify-center text-center transition-all duration-500 shadow-2xl relative overflow-hidden bg-gradient-to-br from-base/30 via-optimism/30 to-celo/30 p-8"
                 >
                     <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white to-transparent" />
 
                     <div className="relative z-10 space-y-4 flex flex-col items-center justify-center w-full">
-                        <div className="text-4xl animate-bounce drop-shadow-xl">{getNetworkIcon()}</div>
+                        <NetworkLogo />
                         <h2 className="text-2xl font-bold font-heading tracking-wide break-words w-full px-4 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] text-white">
                             {title || "Event Title"}
                         </h2>
