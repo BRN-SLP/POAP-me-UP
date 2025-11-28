@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 :root {
   --background: #050505;
@@ -190,19 +188,65 @@ body::after {
     }
   }
 
-  /* Button Design System */
+  /* Button Design System - Tailwind v4 CSS-first */
   .btn-primary {
-    @apply h-12 px-8 bg-gradient-to-r from-base via-optimism to-celo text-white font-bold rounded-xl;
-    @apply hover:opacity-90 hover:scale-[1.02] transition-all duration-200 shadow-lg;
+    height: 3rem;
+    /* h-12 */
+    padding-left: 2rem;
+    /* px-8 */
+    padding-right: 2rem;
+    background: linear-gradient(to right, #0052FF, #FF0420, #FCFF52);
+    /* gradient from base via optimism to celo */
+    color: white;
+    font-weight: bold;
+    border-radius: 0.75rem;
+    /* rounded-xl */
+    transition: all 0.2s;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    /* shadow-lg */
+  }
+
+  .btn-primary:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
   }
 
   .btn-secondary {
-    @apply h-12 px-8 border-2 border-white/20 text-white font-semibold rounded-xl;
-    @apply hover:bg-white/10 hover:border-white/40 transition-all duration-200;
+    height: 3rem;
+    /* h-12 */
+    padding-left: 2rem;
+    /* px-8 */
+    padding-right: 2rem;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    font-weight: 600;
+    /* font-semibold */
+    border-radius: 0.75rem;
+    /* rounded-xl */
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.4);
   }
 
   .btn-tertiary {
-    @apply h-10 px-6 text-white/80 font-medium rounded-lg;
-    @apply hover:text-white hover:bg-white/5 transition-all duration-200;
+    height: 2.5rem;
+    /* h-10 */
+    padding-left: 1.5rem;
+    /* px-6 */
+    padding-right: 1.5rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+    /* font-medium */
+    border-radius: 0.5rem;
+    /* rounded-lg */
+    transition: all 0.2s;
+  }
+
+  .btn-tertiary:hover {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.05);
   }
 }
