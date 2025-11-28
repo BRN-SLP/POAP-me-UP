@@ -32,26 +32,25 @@ export function Logo({ className, showText = true }: LogoProps) {
                         </linearGradient>
                     </defs>
 
-                    {/* Refined Wave S - Solid shape with elegant rounded bottom-left */}
+                    {/* Refined Wave S - Smooth starting wave tail flowing into S */}
                     <path
-                        d="M 4 28
-                           Q 4 38, 14 38
-                           Q 24 38, 30 32
-                           Q 36 26, 30 20
-                           Q 24 14, 30 8
+                        d="M 2 32
+                           Q 2 38, 12 38
+                           Q 22 38, 28 32
+                           Q 34 26, 30 18
+                           Q 26 10, 32 6
                            Q 36 2, 28 2
                            Q 20 2, 14 8
-                           Q 8 14, 14 20
-                           Q 20 26, 14 32
-                           Q 10 35, 6 30
-                           Q 4 28, 4 28
+                           Q 8 14, 14 22
+                           Q 18 28, 12 32
+                           Q 8 35, 2 32
                            Z"
                         fill="url(#logoGradient)"
                         className="group-hover:scale-105 transition-transform duration-300 origin-center"
                     />
 
                     {/* Wave crest sparkle */}
-                    <circle cx="32" cy="6" r="2" fill="#FCFF52" opacity="0.9"
+                    <circle cx="34" cy="4" r="2" fill="#FCFF52" opacity="0.9"
                         className="group-hover:opacity-100 group-hover:scale-110 transition-all duration-300" />
                 </svg>
             </div>
