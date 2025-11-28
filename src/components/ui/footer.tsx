@@ -8,10 +8,10 @@ export function Footer() {
                     <div className="space-y-5">
                         <div className="flex items-center gap-3">
                             <div className="h-6 w-6 rounded-full bg-gradient-to-br from-base via-optimism to-celo shadow-lg" />
-                            <span className="text-lg font-bold font-heading tracking-tight text-white">POAP me UP</span>
+                            <span className="text-lg font-bold font-heading tracking-tight text-white">SURGE me UP</span>
                         </div>
                         <p className="text-sm text-white/60 leading-relaxed max-w-xs text-balance">
-                            The ultimate POAP generator and minter for the Superchain ecosystem. Built for the future of on-chain memories.
+                            Amplify your achievements with SURGE - the recognition engine for the Superchain ecosystem. Built for the future of on-chain identity.
                         </p>
                     </div>
 
@@ -44,7 +44,7 @@ export function Footer() {
                 </div>
 
                 <div className="mt-20 border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/40">
-                    <p>© {new Date().getFullYear()} POAP me UP. All rights reserved.</p>
+                    <p>© {new Date().getFullYear()} SURGE me UP. All rights reserved.</p>
                     <p className="flex items-center gap-2">
                         Powered by
                         <span className="text-gradient-optimism font-bold">

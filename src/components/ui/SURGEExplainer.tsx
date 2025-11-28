@@ -4,22 +4,22 @@ import { useStagger } from "@/lib/gsap-hooks";
 import { Sparkles, Shield, Zap } from "lucide-react";
 import { HighlightText } from "@/components/ui/TextHighlight";
 
-export function POAPExplainer() {
+export function SURGEExplainer() {
     const cardsRef = useStagger(0.2, 0.15);
 
     const cards = [
         {
             icon: <Sparkles className="h-12 w-12" />,
-            title: "What is a POAP?",
-            description: "Proof of Attendance Protocol - digital collectibles that commemorate life's memorable moments. Each POAP is a unique NFT that proves you were there.",
+            title: "What is a SURGE?",
+            description: "Superchain User Recognition and Growth Engine - digital tokens that amplify your achievements. Each SURGE is a unique NFT celebrating your memorable moments on Superchain.",
             color: "from-base/20 to-base/5",
             borderColor: "border-base/30",
             glowColor: "shadow-[0_0_30px_-10px_rgba(0,82,255,0.3)]"
         },
         {
             icon: <Shield className="h-12 w-12" />,
-            title: "Why POAPs Matter",
-            description: "Build your on-chain identity and reputation. POAPs create a verifiable record of your experiences, connections, and participation in the Web3 ecosystem.",
+            title: "Why SURGEs Matter",
+            description: "Build your on-chain identity and reputation. SURGEs create a verifiable record of your experiences, connections, and participation in the Superchain ecosystem.",
             color: "from-optimism/20 to-optimism/5",
             borderColor: "border-optimism/30",
             glowColor: "shadow-[0_0_30px_-10px_rgba(255,4,32,0.3)]"
@@ -27,7 +27,7 @@ export function POAPExplainer() {
         {
             icon: <Zap className="h-12 w-12" />,
             title: "Powered by Superchain",
-            description: "Mint POAPs across multiple L2 networks with low fees and instant finality. The Superchain makes collecting memories affordable and accessible.",
+            description: "Mint SURGEs across multiple L2 networks with low fees and instant finality. The Superchain makes recognizing achievements affordable and accessible.",
             color: "from-celo/20 to-celo/5",
             borderColor: "border-celo/30",
             glowColor: "shadow-[0_0_30px_-10px_rgba(252,255,82,0.3)]"

@@ -64,7 +64,7 @@ export function LivePreview({
                 <div className="w-full h-full flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm rounded-2xl">
                     <Sparkles className="w-16 h-16 text-blue-400 mb-6 animate-pulse" />
                     <h3 className="text-2xl font-bold text-white mb-2">
-                        Creating your POAP
+                        Creating your SURGE
                     </h3>
                     <p className="text-white/60 text-center px-4 mb-6">
                         This may take 10-30 seconds
@@ -80,7 +80,7 @@ export function LivePreview({
                 <div ref={imageRevealRef} className="w-full h-full flex items-center justify-center">
                     <img
                         src={imageUrl}
-                        alt={title || "POAP Preview"}
+                        alt={title || "SURGE Preview"}
                         className="max-w-full max-h-full object-contain rounded-lg"
                         style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                         onError={(e) => {
@@ -108,7 +108,7 @@ export function LivePreview({
                             {date || "YYYY-MM-DD"}
                         </p>
                         <div className="text-xs uppercase tracking-widest opacity-80 mt-4 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] font-bold text-white">
-                            {network} POAP
+                            {network} SURGE
                         </div>
                     </div>
                 </div>

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useFadeIn, useFloating, useHeroScroll } from "@/lib/gsap-hooks";
 import { useRef } from "react";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
-import { POAPExplainer } from "@/components/ui/POAPExplainer";
+import { SURGEExplainer } from "@/components/ui/SURGEExplainer";
 import { SuperchainEcosystem } from "@/components/ui/SuperchainEcosystem";
 import { ProcessTimeline } from "@/components/ui/ProcessTimeline";
 
@@ -37,11 +37,11 @@ export default function Home() {
 
                 <div className="relative z-10 max-w-5xl mx-auto space-y-10">
                     <h1 ref={heroRef} className="text-7xl md:text-9xl font-heading font-bold tracking-tighter text-white leading-[0.9]">
-                        POAP me <GradientText>UP</GradientText>
+                        SURGE me <GradientText>UP</GradientText>
                     </h1>
 
                     <p ref={subtitleRef} className="text-xl md:text-3xl text-white/60 max-w-3xl mx-auto leading-relaxed font-light">
-                        Generate and mint exclusive POAPs on the <GradientText className="font-bold">Superchain</GradientText>.
+                        Amplify your achievements with <GradientText className="font-bold">SURGE</GradientText> – the recognition engine built on <GradientText className="font-bold">Superchain</GradientText>.
                         Support for <span className="text-[#0052FF] font-bold">Base</span>, <span className="text-[#FF0420] font-bold">Optimism</span>, and <span className="text-[#FCFF52] font-bold">Celo</span>.
                     </p>
 
@@ -72,8 +72,8 @@ export default function Home() {
                     <AnimatedCounter
                         target={15000}
                         suffix="+"
-                        label="POAPs Minted"
-                        description="Memories preserved on-chain"
+                        label="SURGEs Minted"
+                        description="Achievements amplified on-chain"
                     />
                     <AnimatedCounter
                         target={0}
@@ -95,7 +95,7 @@ export default function Home() {
                             Turn moments into digital collectibles that last forever
                         </p>
                     </div>
-                    <POAPExplainer />
+                    <SURGEExplainer />
                 </div>
             </section>
 
@@ -127,7 +127,7 @@ export default function Home() {
                         </p>
                         <Link href="/generator">
                             <Button size="lg" className="h-20 px-12 text-2xl rounded-full bg-white text-black hover:bg-white/90 hover:scale-105 transition-all shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]">
-                                Create Your First POAP
+                                Create Your First SURGE
                             </Button>
                         </Link>
                     </div>

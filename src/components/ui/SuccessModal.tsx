@@ -32,7 +32,7 @@ export function SuccessModal({
     };
 
     const handleShareTwitter = () => {
-        const text = `Just minted a new POAP "${poapTitle}" on POAP me UP! 🎨✨\n\nCreate yours on the Superchain:`;
+        const text = `Just minted a new SURGE "${poapTitle}" on SURGE me UP! 🌊✨\n\nRide the wave on Superchain:`;
         window.open(
             `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`,
             '_blank'
@@ -40,7 +40,7 @@ export function SuccessModal({
     };
 
     const handleShareWarpcast = () => {
-        const text = `Just minted a new POAP "${poapTitle}" on POAP me UP! 🎨✨`;
+        const text = `Just minted a new SURGE "${poapTitle}" on SURGE me UP! 🌊✨`;
         window.open(
             `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${encodeURIComponent(shareUrl)}`,
             '_blank'
@@ -60,10 +60,10 @@ export function SuccessModal({
 
                 {/* Title */}
                 <h2 className="text-3xl font-bold text-white text-center mb-2">
-                    POAP Created Successfully!
+                    SURGE Created Successfully!
                 </h2>
                 <p className="text-white/70 text-center mb-6">
-                    Your unique POAP is ready to use
+                    Your unique SURGE is ready to use
                 </p>
 
                 {/* POAP Preview */}
@@ -83,7 +83,7 @@ export function SuccessModal({
                         size="lg"
                     >
                         <Download className="w-4 h-4" />
-                        Download POAP
+                        Download SURGE
                     </Button>
 
                     <div className="grid grid-cols-2 gap-3">

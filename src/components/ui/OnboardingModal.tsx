@@ -34,7 +34,7 @@ export function OnboardingModal() {
                 </button>
 
                 <div className="text-center mb-8">
-                    <h2 className="text-2xl font-bold font-heading mb-2">Welcome to POAP me UP! 👋</h2>
+                    <h2 className="text-2xl font-bold font-heading mb-2">Welcome to SURGE me UP! 🌊</h2>
                     <p className="text-white/60">Create unique digital collectibles in 3 simple steps</p>
                 </div>
 
@@ -65,7 +65,7 @@ export function OnboardingModal() {
                         </div>
                         <div>
                             <h3 className="font-semibold text-white mb-1">3. Mint & Share</h3>
-                            <p className="text-sm text-white/60">Mint your POAP on-chain and share the claim link with your community.</p>
+                            <p className="text-sm text-white/60">Mint your SURGE on-chain and share the claim link with your community.</p>
                         </div>
                     </div>
                 </div>

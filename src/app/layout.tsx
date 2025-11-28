@@ -18,8 +18,8 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "POAP me UP",
-  description: "Generate and mint POAPs on Superchain",
+  title: "SURGE me UP",
+  description: "Amplify your achievements with SURGE - the Superchain recognition engine",
 };
 
 import { Navbar } from "@/components/ui/navbar";

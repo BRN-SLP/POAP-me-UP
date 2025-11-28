@@ -264,7 +264,7 @@ export function GeneratorForm() {
             const keywordsText = formData.keywords ? `. Visual elements: ${formData.keywords}` : "";
             const dateText = formData.date ? `. Date: "${formData.date}"` : "";
 
-            const fullPrompt = `${styleKeywords}. A premium POAP commemorative badge design. Title text must read: "${formData.title}"${dateText}${keywordsText}`;
+            const fullPrompt = `${styleKeywords}. A premium SURGE commemorative badge design. Title text must read: "${formData.title}"${dateText}${keywordsText}`;
 
             console.log('[FRONTEND] Calling API with prompt:', fullPrompt.substring(0, 100));
 
@@ -319,7 +319,7 @@ export function GeneratorForm() {
         } catch (err: any) {
             console.error('[FRONTEND] Generation error:', err);
             setError({
-                title: "Failed to create POAP",
+                title: "Failed to create SURGE",
                 message: err.message || "Check your internet connection and try again",
                 canRetry: true
             });
@@ -409,13 +409,13 @@ export function GeneratorForm() {
 
                 <Card className="glass-panel border-white/10 bg-white/5 backdrop-blur-xl overflow-hidden">
                     <CardHeader>
-                        <CardTitle className="text-2xl font-heading">POAP Details</CardTitle>
+                        <CardTitle className="text-2xl font-heading">SURGE Details</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-6">
                         <div className="space-y-3">
                             <div className="flex items-center gap-2">
                                 <label className="text-sm font-medium text-white/70 uppercase tracking-wider">Network</label>
-                                <HelpButton content="Choose the blockchain network for your POAP. Base and Optimism are L2 solutions with low fees." />
+                                <HelpButton content="Choose the blockchain network for your SURGE. Base and Optimism are L2 solutions with low fees." />
                             </div>
                             <div className="flex gap-3">
                                 <Button
@@ -496,7 +496,7 @@ export function GeneratorForm() {
 
                         <div className="space-y-3">
                             <div className="flex items-center gap-2">
-                                <label className="text-sm font-medium text-white/70 uppercase tracking-wider">POAP Style</label>
+                                <label className="text-sm font-medium text-white/70 uppercase tracking-wider">SURGE Style</label>
                                 <HelpButton content="Select an artistic style for your badge. AI will generate a unique design based on this style." />
                             </div>
                             <div className="grid grid-cols-3 gap-2">
@@ -528,7 +528,7 @@ export function GeneratorForm() {
                                 onChange={(e) => setFormData({ ...formData, keywords: e.target.value })}
                                 className="bg-black/40 border-white/20 focus:border-white/40 h-12 text-white placeholder:text-white/30"
                             />
-                            <p className="text-xs text-white/50">Add visual themes and elements for your POAP</p>
+                            <p className="text-xs text-white/50">Add visual themes and elements for your SURGE</p>
                         </div>
                     </CardContent>
                 </Card>
@@ -600,7 +600,7 @@ export function GeneratorForm() {
                             ) : (
                                 <Wallet className="mr-2 h-4 w-4" />
                             )}
-                            {isMinting ? "Minting..." : isConfirming ? "Confirming..." : "Mint POAP"}
+                            {isMinting ? "Minting..." : isConfirming ? "Confirming..." : "Mint SURGE"}
                         </Button>
                     </div>
 

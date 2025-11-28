@@ -32,8 +32,8 @@ const queryClient = new QueryClient()
 
 // Set up metadata
 const metadata = {
-    name: "POAP me UP",
-    description: "Generate and mint exclusive POAPs on the Superchain",
+    name: "SURGE me UP",
+    description: "Amplify your achievements with SURGE - the Superchain recognition engine",
     url: "http://185.229.251.126:3000",
     icons: ["https://avatars.githubusercontent.com/u/179229932"],
 }

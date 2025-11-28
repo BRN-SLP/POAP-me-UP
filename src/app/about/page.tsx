@@ -16,10 +16,10 @@ export default function AboutPage() {
 
             <div ref={headerRef} className="flex flex-col items-center text-center mb-16 space-y-4">
                 <h1 className="text-4xl md:text-6xl font-bold font-heading tracking-tight text-white">
-                    About POAP me UP
+                    About SURGE me UP
                 </h1>
                 <p className="text-xl text-white/60 max-w-2xl font-light">
-                    Building the future of on-chain memories on the Superchain.
+                    Building the future of on-chain recognition on the Superchain.
                 </p>
             </div>
 
@@ -30,7 +30,7 @@ export default function AboutPage() {
                     </CardHeader>
                     <CardContent>
                         <p className="text-lg text-white/70 leading-relaxed">
-                            POAP me UP is designed to simplify the creation and distribution of Proof of Attendance Protocols (POAPs) across the Superchain ecosystem. By leveraging the power of <span className="text-base-neon font-medium">Base</span>, <span className="text-optimism-neon font-medium">Optimism</span>, and <span className="text-celo-neon font-medium">Celo</span>, we provide a unified platform for communities to mint lasting memories without the friction of high fees or complex bridging.
+                            SURGE me UP is designed to simplify the creation and distribution of recognition tokens across the Superchain ecosystem. By leveraging the power of <span className="text-base-neon font-medium">Base</span>, <span className="text-optimism-neon font-medium">Optimism</span>, and <span className="text-celo-neon font-medium">Celo</span>, we provide a unified platform for communities to celebrate achievements without the friction of high fees or complex bridging.
                         </p>
                     </CardContent>
                 </Card>
