@@ -23,33 +23,52 @@ export function Logo({ className, showText = true }: LogoProps) {
                     className="relative z-10"
                 >
                     <defs>
-                        <linearGradient id="logoGradient" x1="5" y1="5" x2="35" y2="35" gradientUnits="userSpaceOnUse">
+                        <linearGradient id="logoGradient" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
                             <stop offset="0%" stopColor="#0052FF" />
-                            <stop offset="50%" stopColor="#FF0420" />
+                            <stop offset="30%" stopColor="#8844FF" />
+                            <stop offset="60%" stopColor="#FF0420" />
+                            <stop offset="80%" stopColor="#FF8844" />
                             <stop offset="100%" stopColor="#FCFF52" />
                         </linearGradient>
                     </defs>
 
-                    {/* Main S letter formed by wave - clean readable S shape */}
+                    {/* Wave forming S shape - filled wave surface */}
                     <path
-                        d="M 30 12 
-                           C 30 8, 26 5, 20 5 
-                           C 14 5, 10 8, 10 12 
-                           C 10 16, 14 18, 20 19 
-                           C 26 20, 30 22, 30 26 
-                           C 30 30, 26 33, 20 33 
-                           C 14 33, 10 30, 10 26"
-                        stroke="url(#logoGradient)"
-                        strokeWidth="3.5"
-                        strokeLinecap="round"
-                        fill="none"
-                        className="group-hover:scale-105 transition-transform duration-300"
+                        d="M 8 12
+                           Q 8 8, 12 6
+                           Q 16 4, 20 4
+                           Q 24 4, 28 6
+                           Q 32 8, 32 12
+                           Q 32 16, 28 18
+                           L 25 19
+                           Q 22 20, 20 20
+                           L 15 21
+                           Q 12 22, 12 26
+                           Q 12 30, 15 32
+                           Q 18 34, 22 34
+                           Q 26 34, 30 32
+                           Q 34 30, 34 26
+                           L 34 36
+                           Q 34 36, 30 38
+                           Q 26 40, 20 40
+                           Q 14 40, 10 38
+                           Q 6 36, 6 30
+                           Q 6 24, 10 22
+                           L 13 21
+                           Q 16 20, 18 20
+                           L 23 19
+                           Q 26 18, 28 14
+                           Q 28 10, 25 8
+                           Q 22 6, 18 6
+                           Q 14 6, 10 8
+                           Q 6 10, 6 14
+                           Z"
+                        fill="url(#logoGradient)"
+                        className="group-hover:scale-105 transition-transform duration-300 origin-center"
                     />
 
-                    {/* Wave crest at top - small sparkles */}
-                    <circle cx="32" cy="8" r="1.5" fill="#FCFF52" opacity="0.8"
-                        className="group-hover:opacity-100 transition-opacity duration-300" />
-                    <circle cx="35" cy="11" r="1" fill="#FF0420" opacity="0.6"
+                    {/* Wave crest sparkles */}
+                    <circle cx="34" cy="8" r="2" fill="#FCFF52" opacity="0.9"
                         className="group-hover:opacity-100 transition-opacity duration-300" />
                 </svg>
             </div>
