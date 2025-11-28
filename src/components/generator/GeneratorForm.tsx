@@ -216,9 +216,11 @@ export function GeneratorForm() {
         document.body.removeChild(link);
 
         trackEvent({
-            action: 'export_poap',
-            category: 'poap_generator',
-            label: formData.network
+            name: 'EXPORT_POAP',
+            properties: {
+                network: formData.network,
+                title: formData.title
+            }
         });
     };
 

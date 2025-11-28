@@ -10,6 +10,7 @@ type EventName =
     | "MINT_POAP_START"
     | "MINT_POAP_SUCCESS"
     | "MINT_POAP_ERROR"
+    | "EXPORT_POAP"
     | "TEMPLATE_SELECTED"
     | "SHARE_CLICK"
     | "EXPLORER_VIEW"
