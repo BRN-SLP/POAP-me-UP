@@ -9,7 +9,7 @@ export default function GalleryPage() {
                         My <span className="text-gradient-optimism">Collection</span>
                     </h1>
                     <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                        Your personal gallery of created POAPs. Memories preserved on the Superchain.
+                        Your personal gallery of created SURGEs. Achievements preserved on the Superchain.
                     </p>
                 </div>
 

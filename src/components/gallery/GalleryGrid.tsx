@@ -79,13 +79,13 @@ export function GalleryGrid() {
                 <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6">
                     <Sparkles className="w-10 h-10 text-white/20" />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-2">No POAPs Yet</h3>
+                <h3 className="text-2xl font-bold text-white mb-2">No SURGEs Yet</h3>
                 <p className="text-white/60 mb-8 max-w-md mx-auto">
-                    You haven't created any POAPs on this device yet. Start your collection by creating your first memory!
+                    You haven't created any SURGEs on this device yet. Start your collection by creating your first achievement!
                 </p>
                 <Link href="/generator">
                     <Button className="btn-primary text-lg">
-                        Create POAP
+                        Create SURGE
                     </Button>
                 </Link>
             </div>
@@ -110,7 +110,7 @@ export function GalleryGrid() {
                                     className="h-8 w-8 rounded-full bg-white/10 hover:bg-[#1DA1F2] text-white border-none"
                                     onClick={() => {
                                         trackEvent({ name: "SHARE_CLICK", properties: { platform: "twitter", poapId: poap.id } });
-                                        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out my POAP "${poap.title}"! 🎨`)}&url=${encodeURIComponent(window.location.origin)}`, '_blank');
+                                        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out my SURGE "${poap.title}"! 🌊`)}&url=${encodeURIComponent(window.location.origin)}`, '_blank');
                                     }}
                                     title="Share on Twitter"
                                 >
@@ -122,7 +122,7 @@ export function GalleryGrid() {
                                     className="h-8 w-8 rounded-full bg-white/10 hover:bg-[#472A91] text-white border-none"
                                     onClick={() => {
                                         trackEvent({ name: "SHARE_CLICK", properties: { platform: "warpcast", poapId: poap.id } });
-                                        window.open(`https://warpcast.com/~/compose?text=${encodeURIComponent(`Check out my POAP "${poap.title}"! 🎨`)}&embeds[]=${encodeURIComponent(window.location.origin)}`, '_blank');
+                                        window.open(`https://warpcast.com/~/compose?text=${encodeURIComponent(`Check out my SURGE "${poap.title}"! 🌊`)}&embeds[]=${encodeURIComponent(window.location.origin)}`, '_blank');
                                     }}
                                     title="Share on Warpcast"
                                 >

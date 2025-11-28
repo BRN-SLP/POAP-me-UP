@@ -24,7 +24,7 @@ export default function GeneratorPage() {
                         Create Your <span className="text-gradient-optimism">Legacy</span>
                     </h1>
                     <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                        Generate unique POAP artwork using our fine-tuned Pro AI model.
+                        Generate unique SURGE artwork using our fine-tuned Pro AI model.
                     </p>
                 </div>
 

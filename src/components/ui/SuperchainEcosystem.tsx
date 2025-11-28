@@ -62,7 +62,7 @@ export function SuperchainEcosystem() {
                     The Superchain Ecosystem
                 </h2>
                 <p className="text-xl text-white/60 max-w-3xl mx-auto">
-                    One unified platform to mint POAPs across multiple Layer 2 networks
+                    One unified platform to mint SURGEs across multiple Layer 2 networks
                 </p>
             </div>
 

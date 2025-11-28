@@ -30,29 +30,40 @@ export function Logo({ className, showText = true }: LogoProps) {
                         </linearGradient>
                     </defs>
 
-                    {/* Hexagon Background */}
+                    {/* Wave/Surge Shape forming upward motion */}
                     <path
-                        d="M20 2L35.5885 11V29L20 38L4.41154 29V11L20 2Z"
-                        fill="#050505"
-                        stroke="url(#logoGradient)"
-                        strokeWidth="1.5"
+                        d="M5 25C8 22 12 20 16 22C20 24 24 20 28 18C32 16 36 18 36 18L36 35L5 35Z"
+                        fill="url(#logoGradient)"
+                        opacity="0.3"
+                        className="group-hover:opacity-40 transition-opacity duration-500"
                     />
 
-                    {/* Up Arrow */}
+                    {/* Main surge wave */}
                     <path
-                        d="M20 28V12M20 12L13 19M20 12L27 19"
+                        d="M5 20C10 15 15 12 20 15C25 18 30 12 35 10"
+                        stroke="url(#logoGradient)"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        fill="none"
+                        className="group-hover:-translate-y-1 transition-transform duration-300"
+                    />
+
+                    {/* Energy burst/arrow up */}
+                    <path
+                        d="M20 15L20 5M20 5L16 9M20 5L24 9"
                         stroke="url(#logoGradient)"
                         strokeWidth="2.5"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        className="group-hover:-translate-y-1 transition-transform duration-300"
+                        className="group-hover:-translate-y-2 transition-transform duration-300"
                     />
                 </svg>
             </div>
 
             {showText && (
                 <span className="font-heading font-bold text-2xl tracking-tight text-white">
-                    POAP me <span className="text-transparent bg-clip-text bg-gradient-to-r from-base via-optimism to-celo animate-gradient-text bg-[length:200%_auto]">UP</span>
+                    SURGE me <span className="text-transparent bg-clip-text bg-gradient-to-r from-base via-optimism to-celo animate-gradient-text bg-[length:200%_auto]">UP</span>
                 </span>
             )}
         </div>

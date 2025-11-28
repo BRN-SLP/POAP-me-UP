@@ -55,7 +55,7 @@ export default function DesignSystem() {
                     </div>
                     <div>
                         <p className="text-xl leading-relaxed text-white/80 max-w-2xl">
-                            Body Large. Generate and mint exclusive POAPs on the Superchain. Support for Base, Optimism, and Celo.
+                            Body Large. Generate and mint exclusive SURGEs on the Superchain. Support for Base, Optimism, and Celo.
                         </p>
                         <p className="font-mono text-sm text-white/50 mt-2">text-xl leading-relaxed text-white/80</p>
                     </div>

@@ -9,7 +9,7 @@ export function ProcessTimeline() {
     const steps = [
         {
             icon: <Palette className="h-8 w-8" />,
-            title: "Design Your POAP",
+            title: "Design Your SURGE",
             description: "Choose your event details, select a theme style, and add custom keywords",
             color: "base",
             gradient: "from-base/20 to-base/5"
@@ -31,7 +31,7 @@ export function ProcessTimeline() {
         {
             icon: <CheckCircle className="h-8 w-8" />,
             title: "Mint & Share",
-            description: "Mint your POAP on-chain and share it with your community instantly",
+            description: "Mint your SURGE on-chain and share it with your community instantly",
             color: "base",
             gradient: "from-base/20 via-optimism/10 to-celo/5"
         }
@@ -44,7 +44,7 @@ export function ProcessTimeline() {
                     How It Works
                 </h2>
                 <p className="text-xl text-white/60 max-w-2xl mx-auto">
-                    Create and mint your POAP in four simple steps
+                    Create and mint your SURGE in four simple steps
                 </p>
             </div>
 
