@@ -23,42 +23,34 @@ export function Logo({ className, showText = true }: LogoProps) {
                     className="relative z-10"
                 >
                     <defs>
-                        <linearGradient id="logoGradient" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                        <linearGradient id="logoGradient" x1="5" y1="5" x2="35" y2="35" gradientUnits="userSpaceOnUse">
                             <stop offset="0%" stopColor="#0052FF" />
                             <stop offset="50%" stopColor="#FF0420" />
                             <stop offset="100%" stopColor="#FCFF52" />
                         </linearGradient>
                     </defs>
 
-                    {/* S shaped wave - smooth curves forming letter S with wave motion */}
+                    {/* Main S letter formed by wave - clean readable S shape */}
                     <path
-                        d="M28 8 C32 8, 35 11, 35 15 C35 19, 32 22, 27 23 C22 24, 18 24, 13 23 C8 22, 5 19, 5 15 C5 13, 6 11, 8 10"
+                        d="M 30 12 
+                           C 30 8, 26 5, 20 5 
+                           C 14 5, 10 8, 10 12 
+                           C 10 16, 14 18, 20 19 
+                           C 26 20, 30 22, 30 26 
+                           C 30 30, 26 33, 20 33 
+                           C 14 33, 10 30, 10 26"
                         stroke="url(#logoGradient)"
-                        strokeWidth="3"
+                        strokeWidth="3.5"
                         strokeLinecap="round"
                         fill="none"
-                        className="group-hover:-translate-y-0.5 transition-transform duration-300"
+                        className="group-hover:scale-105 transition-transform duration-300"
                     />
 
-                    {/* Lower S curve with wave */}
-                    <path
-                        d="M12 18 C8 18, 5 21, 5 25 C5 29, 8 32, 13 32 C18 32, 22 32, 27 31 C32 30, 35 27, 35 23 C35 21, 34 19, 32 18"
-                        stroke="url(#logoGradient)"
-                        strokeWidth="3"
-                        strokeLinecap="round"
-                        fill="none"
-                        className="group-hover:translate-y-0.5 transition-transform duration-300"
-                    />
-
-                    {/* Wave crest accent - small energy burst at top */}
-                    <path
-                        d="M30 6 L32 4 M26 7 L27 5"
-                        stroke="url(#logoGradient)"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        opacity="0.6"
-                        className="group-hover:opacity-100 group-hover:-translate-y-1 transition-all duration-300"
-                    />
+                    {/* Wave crest at top - small sparkles */}
+                    <circle cx="32" cy="8" r="1.5" fill="#FCFF52" opacity="0.8"
+                        className="group-hover:opacity-100 transition-opacity duration-300" />
+                    <circle cx="35" cy="11" r="1" fill="#FF0420" opacity="0.6"
+                        className="group-hover:opacity-100 transition-opacity duration-300" />
                 </svg>
             </div>
 
