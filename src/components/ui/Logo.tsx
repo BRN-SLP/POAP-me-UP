@@ -23,53 +23,50 @@ export function Logo({ className, showText = true }: LogoProps) {
                     className="relative z-10"
                 >
                     <defs>
-                        <linearGradient id="logoGradient" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                        <linearGradient id="logoGradient" x1="0" y1="40" x2="40" y2="0" gradientUnits="userSpaceOnUse">
                             <stop offset="0%" stopColor="#0052FF" />
-                            <stop offset="30%" stopColor="#8844FF" />
-                            <stop offset="60%" stopColor="#FF0420" />
-                            <stop offset="80%" stopColor="#FF8844" />
+                            <stop offset="25%" stopColor="#6644CC" />
+                            <stop offset="50%" stopColor="#CC3366" />
+                            <stop offset="70%" stopColor="#FF6633" />
                             <stop offset="100%" stopColor="#FCFF52" />
                         </linearGradient>
                     </defs>
 
-                    {/* Wave forming S shape - filled wave surface */}
+                    {/* Ocean wave rising and forming S-like shape with crest curl */}
                     <path
-                        d="M 8 12
-                           Q 8 8, 12 6
-                           Q 16 4, 20 4
-                           Q 24 4, 28 6
-                           Q 32 8, 32 12
-                           Q 32 16, 28 18
-                           L 25 19
-                           Q 22 20, 20 20
-                           L 15 21
-                           Q 12 22, 12 26
-                           Q 12 30, 15 32
-                           Q 18 34, 22 34
-                           Q 26 34, 30 32
-                           Q 34 30, 34 26
-                           L 34 36
-                           Q 34 36, 30 38
-                           Q 26 40, 20 40
-                           Q 14 40, 10 38
-                           Q 6 36, 6 30
+                        d="M 4 38
+                           L 4 28
                            Q 6 24, 10 22
-                           L 13 21
-                           Q 16 20, 18 20
-                           L 23 19
-                           Q 26 18, 28 14
-                           Q 28 10, 25 8
-                           Q 22 6, 18 6
-                           Q 14 6, 10 8
-                           Q 6 10, 6 14
+                           Q 14 20, 18 19
+                           Q 22 18, 26 18
+                           Q 30 18, 32 16
+                           Q 34 14, 34 10
+                           Q 34 6, 30 4
+                           Q 26 2, 22 3
+                           Q 18 4, 16 8
+                           L 14 12
+                           Q 12 16, 10 18
+                           Q 8 20, 6 22
+                           L 6 26
+                           Q 8 24, 12 23
+                           Q 16 22, 20 22
+                           Q 24 22, 28 24
+                           Q 32 26, 34 30
+                           Q 36 34, 35 36
+                           Q 34 38, 32 38
+                           Q 30 38, 28 36
+                           Q 26 34, 22 32
+                           Q 18 30, 14 32
+                           Q 10 34, 8 36
+                           L 6 38
                            Z"
                         fill="url(#logoGradient)"
                         className="group-hover:scale-105 transition-transform duration-300 origin-center"
                     />
 
-                    {/* Wave crest sparkles */}
-                    <circle cx="34" cy="8" r="2" fill="#FCFF52" opacity="0.9"
-                        className="group-hover:opacity-100 transition-opacity duration-300" />
+                    {/* Wave crest sparkle */}
+                    <circle cx="36" cy="8" r="2.5" fill="#FCFF52" opacity="0.95"
+                        className="group-hover:opacity-100 group-hover:scale-110 transition-all duration-300" />
                 </svg>
             </div>
 
