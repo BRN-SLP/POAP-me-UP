@@ -24,6 +24,7 @@ export const metadata: Metadata = {
 
 import { Navbar } from "@/components/ui/navbar";
 import { Footer } from "@/components/ui/footer";
+import { WalletStatus } from "@/components/ui/WalletStatus";
 
 export default async function RootLayout({
   children,
@@ -44,6 +45,7 @@ export default async function RootLayout({
       >
         <ContextProvider cookies={cookies}>
           <Navbar />
+          <WalletStatus />
           <main className="flex-1">{children}</main>
           <Footer />
         </ContextProvider>

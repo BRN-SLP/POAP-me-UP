@@ -6,7 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LivePreview } from "./LivePreview";
-import { Sparkles, RefreshCw, Download, Wallet, CheckCircle2, Loader2 } from "lucide-react";
+import { LoadingState } from "@/components/ui/LoadingState";
+import { ErrorAlert } from "@/components/ui/ErrorAlert";
+import { SuccessModal } from "@/components/ui/SuccessModal";
+import { HelpButton } from "@/components/ui/HelpButton";
+import { POAPTemplate } from "@/data/templates";
+import { useFormValidation } from "@/hooks/useFormValidation";
+import { useAnalytics } from "@/hooks/useAnalytics";
+import { Sparkles, RefreshCw, Download, Wallet, CheckCircle2, Loader2, Upload, Image as ImageIcon, X } from "lucide-react";
 import { useAccount, useWriteContract, useWaitForTransactionReceipt, useSwitchChain } from "wagmi";
 import { POAP_ABI, POAP_ADDRESSES } from "@/config/contracts";
 import { base, baseSepolia, optimismSepolia } from "wagmi/chains";
@@ -15,28 +22,18 @@ import { useFadeIn, useMagnetic } from "@/lib/gsap-hooks";
 export function GeneratorForm() {
     const { address, isConnected, chain } = useAccount();
     const { switchChain } = useSwitchChain();
-    const { writeContract, data: hash, isPending: isMinting, error: mintError } = useWriteContract();
+    const { writeContract, writeContractAsync, data: hash, isPending: isMinting, error: mintError } = useWriteContract();
     const { isLoading: isConfirming, isSuccess: isConfirmed, data: receipt } = useWaitForTransactionReceipt({
         hash,
     });
 
     const [mintedTokenId, setMintedTokenId] = useState<string | null>(null);
     const [isBridging, setIsBridging] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     const formRef = useFadeIn(0.2);
 
-    useEffect(() => {
-        if (isConfirmed && receipt) {
-            const transferLog = receipt.logs.find(log =>
-                log.topics[0] === "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
-            );
-            if (transferLog && transferLog.topics[3]) {
-                const id = parseInt(transferLog.topics[3], 16).toString();
-                setMintedTokenId(id);
-            }
-        }
-    }, [isConfirmed, receipt]);
-
+    // Form data state - must be declared before validation rules that reference it
     const [formData, setFormData] = useState<{
         title: string;
         date: string;
@@ -52,9 +49,119 @@ export function GeneratorForm() {
         keywords: "",
     });
 
-    const [isGenerating, setIsGenerating] = useState(false);
+    // Form validation rules
+    const validationRules = {
+        title: [
+            { required: true, message: "Event title is required" },
+            { minLength: 3, message: "Minimum 3 characters" },
+            { maxLength: 50, message: "Maximum 50 characters" }
+        ],
+        date: [
+            {
+                custom: (value: string) => !value || new Date(value) >= new Date(new Date().setHours(0, 0, 0, 0)),
+                message: "Date cannot be in the past"
+            }
+        ]
+    };
 
-    const [error, setError] = useState<string | null>(null);
+    const { errors, validate, validateAll, clearError } = useFormValidation(validationRules);
+    const { trackEvent } = useAnalytics();
+
+    useEffect(() => {
+        if (isConfirmed && receipt) {
+            const transferLog = receipt.logs.find(log =>
+                log.topics[0] === "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+            );
+            if (transferLog && transferLog.topics[3]) {
+                const id = parseInt(transferLog.topics[3], 16).toString();
+                setMintedTokenId(id);
+
+                trackEvent({
+                    name: "MINT_POAP_SUCCESS",
+                    properties: {
+                        id,
+                        network: formData.network,
+                        title: formData.title
+                    }
+                });
+
+                // Show success modal when minting is confirmed
+                if (formData.imageUrl) {
+                    // Save to local collection
+                    const myPoaps = JSON.parse(localStorage.getItem('my-poaps') || '[]');
+                    myPoaps.unshift({
+                        id: id,
+                        title: formData.title,
+                        image: formData.imageUrl,
+                        date: formData.date,
+                        network: formData.network,
+                        createdAt: new Date().toISOString()
+                    });
+                    localStorage.setItem('my-poaps', JSON.stringify(myPoaps));
+
+                    setShowSuccessModal(true);
+                }
+            }
+        }
+    }, [isConfirmed, receipt, formData.imageUrl, formData.network, formData.title, trackEvent]);
+
+    const [isGenerating, setIsGenerating] = useState(false);
+    const [generationProgress, setGenerationProgress] = useState("");
+    const [generationMode, setGenerationMode] = useState<'ai' | 'manual'>('ai');
+
+    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            if (file.size > 5 * 1024 * 1024) { // 5MB limit
+                setError({
+                    title: "File too large",
+                    message: "Please upload an image smaller than 5MB",
+                    canRetry: false
+                });
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const result = reader.result as string;
+                setFormData(prev => ({ ...prev, imageUrl: result }));
+                trackEvent({
+                    name: "GENERATE_POAP_SUCCESS", // Reusing event for consistency or create new UPLOAD_SUCCESS
+                    properties: { type: 'manual_upload' }
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const [error, setError] = useState<{
+        title: string;
+        message: string;
+        canRetry: boolean;
+    } | null>(null);
+
+    // Auto-save draft to localStorage
+    useEffect(() => {
+        const saveTimer = setTimeout(() => {
+            if (formData.title || formData.keywords) {
+                localStorage.setItem('poap-draft', JSON.stringify(formData));
+            }
+        }, 1000);
+        return () => clearTimeout(saveTimer);
+    }, [formData]);
+
+    // Restore draft on mount
+    useEffect(() => {
+        const saved = localStorage.getItem('poap-draft');
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                setFormData(parsed);
+            } catch (e) {
+                console.error('Failed to restore draft:', e);
+            }
+        }
+    }, []);
 
     const getTargetChainId = () => {
         switch (formData.network) {
@@ -74,16 +181,63 @@ export function GeneratorForm() {
         abstract: "Abstract art badge design, fluid organic shapes, vibrant color splashes, geometric patterns, surreal composition, artistic interpretation, creative expression, modern art style, dynamic movement, experimental design, psychedelic elements"
     };
 
+    const handleTemplateSelect = (template: POAPTemplate) => {
+        setFormData(prev => ({
+            ...prev,
+            title: template.defaultData.title,
+            theme: template.defaultData.theme,
+            keywords: template.defaultData.keywords,
+            imageUrl: '' // Reset image when template changes
+        }));
+        clearError('title');
+
+        trackEvent({
+            name: "TEMPLATE_SELECTED",
+            properties: {
+                templateId: template.id,
+                templateName: template.name
+            }
+        });
+        // Clear errors when selecting a template
+        setError(null);
+        // Validate the new data (optional, but good practice)
+        validate('title', template.defaultData.title);
+    };
+
     const handleGenerateAI = async () => {
         console.log('[FRONTEND] Starting generation...');
         setError(null);
+
+        // Validate form before generation
+        if (!validateAll({ title: formData.title, date: formData.date })) {
+            setError({
+                title: "Please check the form",
+                message: "Please fix errors before generating",
+                canRetry: false
+            });
+            return;
+        }
+
         if (!formData.title) {
-            setError("Please enter an event title first!");
+            setError({
+                title: "Title is required",
+                message: "Please enter an event title",
+                canRetry: false
+            });
             return;
         }
 
         setIsGenerating(true);
+        setGenerationProgress("AI is creating your unique POAP...");
         console.log('[FRONTEND] isGenerating set to true');
+
+        trackEvent({
+            name: "GENERATE_POAP_START",
+            properties: {
+                theme: formData.theme,
+                hasKeywords: !!formData.keywords
+            }
+        });
 
         try {
             const styleKeywords = stylePrompts[formData.theme] || stylePrompts.modern;
@@ -109,14 +263,14 @@ export function GeneratorForm() {
             console.log('[FRONTEND] API response status:', response.status);
 
             if (!response.ok) {
-                throw new Error(`API returned ${response.status}`);
+                throw new Error(`API returned status ${response.status}`);
             }
 
             const data = await response.json();
             console.log('[FRONTEND] API response data:', data);
 
             if (!data.imageUrl) {
-                throw new Error('No image URL returned');
+                throw new Error('Image was not generated');
             }
 
             console.log('[FRONTEND] Setting imageUrl:', data.imageUrl);
@@ -131,20 +285,63 @@ export function GeneratorForm() {
                 return newData;
             });
 
+            setFormData(prev => ({ ...prev, imageUrl: data.imageUrl }));
+
+            trackEvent({
+                name: "GENERATE_POAP_SUCCESS",
+                properties: {
+                    imageUrl: data.imageUrl
+                }
+            });
+
             console.log('[FRONTEND] Generation SUCCESS!');
 
-        } catch (error: any) {
-            console.error('[FRONTEND] Generation error:', error);
-            setError(error.message || "Failed to generate image. Please try again.");
+        } catch (err: any) {
+            console.error('[FRONTEND] Generation error:', err);
+            setError({
+                title: "Failed to create POAP",
+                message: err.message || "Check your internet connection and try again",
+                canRetry: true
+            });
+            trackEvent({
+                name: "GENERATE_POAP_ERROR",
+                properties: {
+                    error: err instanceof Error ? err.message : "Unknown error"
+                }
+            });
         } finally {
             console.log('[FRONTEND] Setting isGenerating to false');
             setIsGenerating(false);
+            setGenerationProgress("");
         }
     };
 
     const handleClearImage = () => {
         setFormData(prev => ({ ...prev, imageUrl: undefined }));
         setError(null);
+    };
+
+    const handleDownload = () => {
+        if (!formData.imageUrl) return;
+
+        const link = document.createElement('a');
+        link.href = formData.imageUrl;
+        link.download = `poap-${formData.title.replace(/\s+/g, '-').toLowerCase()}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    const handleCreateAnother = () => {
+        setShowSuccessModal(false);
+        setFormData({
+            title: "",
+            date: "",
+            network: "base",
+            theme: "modern",
+            keywords: "",
+        });
+        localStorage.removeItem('poap-draft');
     };
 
     const handleMint = async () => {
@@ -161,7 +358,11 @@ export function GeneratorForm() {
             : POAP_ADDRESSES.optimismSepolia;
 
         if (!contractAddress) {
-            setError("Contract not deployed on this network yet.");
+            setError({
+                title: "Контракт не развернут",
+                message: "Контракт еще не развернут в этой сети",
+                canRetry: false
+            });
             return;
         }
 
@@ -185,13 +386,17 @@ export function GeneratorForm() {
     return (
         <div ref={formRef} className="grid gap-8 lg:grid-cols-2 items-start">
             <div className="space-y-6">
+
                 <Card className="glass-panel border-white/10 bg-white/5 backdrop-blur-xl overflow-hidden">
                     <CardHeader>
                         <CardTitle className="text-2xl font-heading">POAP Details</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-6">
                         <div className="space-y-3">
-                            <label className="text-sm font-medium text-white/70 uppercase tracking-wider">Network</label>
+                            <div className="flex items-center gap-2">
+                                <label className="text-sm font-medium text-white/70 uppercase tracking-wider">Network</label>
+                                <HelpButton content="Choose the blockchain network for your POAP. Base and Optimism are L2 solutions with low fees." />
+                            </div>
                             <div className="flex gap-3">
                                 <Button
                                     variant={formData.network === "base" ? "default" : "outline"}
@@ -200,6 +405,8 @@ export function GeneratorForm() {
                                         ? "bg-base hover:bg-base-neon text-white btn-glow-base"
                                         : "border-base/30 text-base hover:bg-base/10 hover:border-base"
                                         }`}
+                                    aria-label="Select Base Network"
+                                    aria-pressed={formData.network === "base"}
                                 >
                                     Base
                                 </Button>
@@ -210,6 +417,8 @@ export function GeneratorForm() {
                                         ? "bg-optimism hover:bg-optimism-neon text-white btn-glow-optimism"
                                         : "border-optimism/30 text-optimism hover:bg-optimism/10 hover:border-optimism"
                                         }`}
+                                    aria-label="Select Optimism Network"
+                                    aria-pressed={formData.network === "optimism"}
                                 >
                                     Optimism
                                 </Button>
@@ -223,28 +432,53 @@ export function GeneratorForm() {
                             </div>
                         </div>
 
-                        <div className="space-y-3">
-                            <label className="text-sm font-medium text-white/70 uppercase tracking-wider">Event Title</label>
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-white/70 uppercase tracking-wider">Event Title *</label>
                             <Input
                                 placeholder="e.g. Superchain Summit 2024"
                                 value={formData.title}
-                                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                                className="bg-black/40 border-white/20 focus:border-white/40 h-12 text-lg placeholder:text-white/30 text-white"
+                                onChange={(e) => {
+                                    setFormData({ ...formData, title: e.target.value });
+                                    validate('title', e.target.value);
+                                }}
+                                onBlur={(e) => validate('title', e.target.value)}
+                                className={`bg-black/40 border-white/20 focus:border-white/40 h-12 text-lg placeholder:text-white/30 text-white ${errors.title ? 'border-red-500 focus:border-red-500' : ''
+                                    }`}
+                                aria-label="Event Title"
+                                aria-invalid={!!errors.title}
+                                aria-describedby={errors.title ? "title-error" : undefined}
                             />
+                            {errors.title && (
+                                <p id="title-error" role="alert" className="text-sm text-red-400">{errors.title}</p>
+                            )}
                         </div>
 
-                        <div className="space-y-3">
+                        <div className="space-y-2">
                             <label className="text-sm font-medium text-white/70 uppercase tracking-wider">Date</label>
                             <Input
                                 type="date"
                                 value={formData.date}
-                                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                                className="bg-black/40 border-white/20 focus:border-white/40 h-12 text-white"
+                                onChange={(e) => {
+                                    setFormData({ ...formData, date: e.target.value });
+                                    validate('date', e.target.value);
+                                }}
+                                onBlur={(e) => validate('date', e.target.value)}
+                                className={`bg-black/40 border-white/20 focus:border-white/40 h-12 text-white ${errors.date ? 'border-red-500 focus:border-red-500' : ''
+                                    }`}
+                                aria-label="Event Date"
+                                aria-invalid={!!errors.date}
+                                aria-describedby={errors.date ? "date-error" : undefined}
                             />
+                            {errors.date && (
+                                <p id="date-error" role="alert" className="text-sm text-red-400">{errors.date}</p>
+                            )}
                         </div>
 
                         <div className="space-y-3">
-                            <label className="text-sm font-medium text-white/70 uppercase tracking-wider">POAP Style</label>
+                            <div className="flex items-center gap-2">
+                                <label className="text-sm font-medium text-white/70 uppercase tracking-wider">POAP Style</label>
+                                <HelpButton content="Select an artistic style for your badge. AI will generate a unique design based on this style." />
+                            </div>
                             <div className="grid grid-cols-3 gap-2">
                                 {(["sketch", "modern", "flat", "pixel", "monochrome", "abstract"] as const).map((theme) => (
                                     <Button
@@ -264,7 +498,10 @@ export function GeneratorForm() {
                         </div>
 
                         <div className="space-y-3">
-                            <label className="text-sm font-medium text-white/70 uppercase tracking-wider">Keywords (Optional)</label>
+                            <div className="flex items-center gap-2">
+                                <label className="text-sm font-medium text-white/70 uppercase tracking-wider">Keywords (Optional)</label>
+                                <HelpButton content="Add specific visual elements you want to see (e.g., 'futuristic city', 'golden trophy')." />
+                            </div>
                             <Input
                                 placeholder="e.g., clouds, boat, fish, summer"
                                 value={formData.keywords}
@@ -277,9 +514,20 @@ export function GeneratorForm() {
                 </Card>
 
                 {error && (
-                    <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
-                        {error}
-                    </div>
+                    <ErrorAlert
+                        title={error.title}
+                        message={error.message}
+                        onRetry={error.canRetry ? handleGenerateAI : undefined}
+                        onDismiss={() => setError(null)}
+                    />
+                )}
+
+                {isGenerating && (
+                    <LoadingState
+                        variant="ai"
+                        message="Creating your POAP"
+                        submessage="This may take 10-30 seconds"
+                    />
                 )}
 
                 <div className="flex gap-4">
@@ -325,9 +573,10 @@ export function GeneratorForm() {
                             <Download className="mr-2 h-4 w-4" /> Export PNG
                         </Button>
                         <Button
-                            className="flex-1 bg-white text-black hover:bg-white/90 h-12 font-bold"
+                            className="flex-1 bg-white text-black hover:bg-white/90 h-12 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
                             onClick={handleMint}
-                            disabled={!isConnected || isMinting || isConfirming}
+                            disabled={!isConnected || isMinting || isConfirming || !formData.imageUrl}
+                            title={!formData.imageUrl ? "Generate an image first to save POAP to gallery" : ""}
                         >
                             {isMinting || isConfirming ? (
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -380,6 +629,15 @@ export function GeneratorForm() {
                     )}
                 </div>
             </div>
-        </div>
+
+            <SuccessModal
+                isOpen={showSuccessModal}
+                onClose={() => setShowSuccessModal(false)}
+                poapImage={formData.imageUrl || ''}
+                poapTitle={formData.title}
+                onDownload={handleDownload}
+                onCreateAnother={handleCreateAnother}
+            />
+        </div >
     );
 }

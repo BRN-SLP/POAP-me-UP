@@ -4,10 +4,22 @@ import Link from "next/link";
 import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
 import { Wallet } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
+import { useAnalytics } from "@/hooks/useAnalytics";
+import { useEffect } from "react";
 
 export function Navbar() {
     const { open } = useAppKit();
     const { address, isConnected } = useAppKitAccount();
+    const { trackEvent } = useAnalytics();
+
+    useEffect(() => {
+        if (isConnected && address) {
+            trackEvent({
+                name: "WALLET_CONNECT",
+                properties: { address }
+            });
+        }
+    }, [isConnected, address, trackEvent]);
 
     const formatAddress = (addr: string) => {
         return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
@@ -27,12 +39,21 @@ export function Navbar() {
                     <div className="hidden md:flex items-center gap-1">
                         <Link
                             href="/generator"
+                            onClick={() => trackEvent({ name: "NAVIGATION_CLICK", properties: { to: "/generator" } })}
                             className="px-4 py-2 text-sm font-medium text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all duration-200"
                         >
                             Generator
                         </Link>
                         <Link
+                            href="/gallery"
+                            onClick={() => trackEvent({ name: "NAVIGATION_CLICK", properties: { to: "/gallery" } })}
+                            className="px-4 py-2 text-sm font-medium text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all duration-200"
+                        >
+                            Collection
+                        </Link>
+                        <Link
                             href="/about"
+                            onClick={() => trackEvent({ name: "NAVIGATION_CLICK", properties: { to: "/about" } })}
                             className="px-4 py-2 text-sm font-medium text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-all duration-200"
                         >
                             About

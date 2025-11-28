@@ -1,6 +1,15 @@
 "use client";
 
 import { GeneratorForm } from "@/components/generator/GeneratorForm";
+import dynamic from 'next/dynamic';
+
+const SocialProof = dynamic(() => import('@/components/ui/SocialProof').then(mod => mod.SocialProof), {
+    loading: () => <div className="h-96 animate-pulse bg-white/5 rounded-3xl" />
+});
+
+const OnboardingModal = dynamic(() => import('@/components/ui/OnboardingModal').then(mod => mod.OnboardingModal), {
+    ssr: false // No need to SSR the modal as it's client-side only interaction
+});
 
 export default function GeneratorPage() {
     return (
@@ -34,6 +43,9 @@ export default function GeneratorPage() {
                         </div>
                     </div>
                 </div>
+
+                <SocialProof />
+                <OnboardingModal />
             </div>
         </div>
     );

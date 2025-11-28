@@ -10,7 +10,7 @@ if (typeof window !== "undefined") {
 }
 
 /**
- * Hook for fade-in animation on scroll
+ * Hook for fade-in animation on mount (no scroll trigger)
  */
 export function useFadeIn(delay = 0) {
     const ref = useRef<HTMLDivElement>(null);
@@ -32,16 +32,10 @@ export function useFadeIn(delay = 0) {
                 duration: 1,
                 delay,
                 ease: "power3.out",
-                scrollTrigger: {
-                    trigger: element,
-                    start: "top 80%",
-                    toggleActions: "play none none none",
-                },
             }
         );
 
         return () => {
-            animation.scrollTrigger?.kill();
             animation.kill();
         };
     }, [delay]);
